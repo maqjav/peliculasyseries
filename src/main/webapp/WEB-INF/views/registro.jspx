@@ -1,0 +1,44 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:jsp="http://java.sun.com/JSP/Page" 
+	xmlns:form="http://www.springframework.org/tags/form" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" id="cuerpo" version="2.0">
+	
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="img_listado" value="/resources/images/listado.png" />
+
+	<!-- Imagen superior -->
+	<img src="${img_listado}" class="menu_superior_lista"/>
+	
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="registro_titulo" var="registro_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(registro_titulo)}</span>
+			<div id="formulario">
+				<form:form action="/usuarios/registro" method="POST" modelAttribute="registro" enctype="multipart/form-data">
+					<spring:message code="registro_usuario" var="registro_usuario" htmlEscape="false"/>
+					<span>${fn:escapeXml(registro_usuario)} </span>
+					<form:input path="nombre" maxlength="8"/>
+					<br/>
+					<spring:message code="registro_contrasenia" var="registro_contrasenia" htmlEscape="false"/>
+					<span>${fn:escapeXml(registro_contrasenia)} </span>
+					<form:password path="contrasenia" maxlength="8"/>
+					<br/>
+					<spring:message code="registro_contrasenia_v" var="registro_contrasenia_v" htmlEscape="false"/>
+					<span>${fn:escapeXml(registro_contrasenia_v)} </span>
+					<form:password path="contraseniaVerifica" maxlength="8"/>
+					<br/><br/>
+					<spring:message code="registro_avatar" var="registro_avatar" htmlEscape="false"/>
+					<span>${fn:escapeXml(registro_avatar)} </span>
+					<form:input path="fichero" type="file"/>
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+		</div>
+	</div>
+</div>

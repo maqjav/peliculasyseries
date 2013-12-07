@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:spring="http://www.springframework.org/tags" 
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" id="menu" version="2.0">
+	
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="img_categoria" value="/resources/images/categoria.png" />
+	<spring:url var="img_usuario" value="/resources/images/usuario.png" />
+	
+	<!-- Imagen superior -->
+	<img src="${img_categoria}" class="menu_superior_categoria"/>
+	
+	<!-- Listado de categorias -->
+	<c:forEach items="${categorias}" var="categoria">
+		<c:if test="${categoria.activo}">
+			<spring:message code="etiqueta_categoria" arguments="${categoria.nombre}" var="etiqueta_categoria" htmlEscape="false" />
+			<a href="/buscador/${categoria.id}" name="${fn:escapeXml(etiqueta_categoria)}" title="${fn:escapeXml(etiqueta_categoria)}" class="categoria"> 
+				<img src="/resources/images/${categoria.id}_etiqueta.png"/>
+				<img src="/resources/images/${categoria.id}.png"/>
+			</a>
+		</c:if>
+	</c:forEach>
+	
+	<!-- Formulario de login -->
+	<img src="${img_usuario}" class="menu_usuarios"/>
+	
+	<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false" />
+	
+	<div id="formulario_login">
+		<c:choose>
+			<c:when test="${empty usuario.id}">
+				<form:form action="/usuarios/login" method="POST" modelAttribute="usuario" enctype="application/x-www-form-urlencoded">
+					<spring:message code="usuario" var="etiqueta_buscador" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_buscador)} </span>
+					<form:input path="nombre" maxlength="8"/>
+									
+					<spring:message code="contrasenia" var="etiqueta_contrasenia" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_contrasenia)} </span>
+					<form:password path="contrasenia" maxlength="8"/>
+						
+					<spring:message code="registrate" var="etiqueta_registrate" htmlEscape="false"/>
+					<a href="/usuarios/registro" title="${fn:escapeXml(etiqueta_registrate)}">${fn:escapeXml(etiqueta_registrate)}</a>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</c:when>
+			<c:otherwise>
+				<p>
+					<spring:message code="bienvenido" arguments="${fn:escapeXml(usuario.nombre)}" htmlEscape="false"/><br/>
+					<c:choose>
+						<c:when test="${usuario.permisos == 'A'}">
+							<spring:message code="bienvenido_visita_A" htmlEscape="false"/> <a href="/usuarios/${fn:escapeXml(usuario.id)}"><spring:message code="bienvenido_visita_perfil_A" htmlEscape="false"/></a><br/>
+						</c:when>
+						<c:otherwise>
+							<spring:message code="bienvenido_visita_N" htmlEscape="false"/> <a href="/usuarios/${fn:escapeXml(usuario.id)}"><spring:message code="bienvenido_visita_perfil_N" htmlEscape="false"/></a><br/>
+						</c:otherwise>
+					</c:choose>
+					<spring:message code="etiqueta_desconectar" var="etiqueta_desconectar" htmlEscape="false"/>
+					<a href="/usuarios/desconectar" title="${fn:escapeXml(etiqueta_desconectar)}"><spring:message code="desconectar" htmlEscape="false"/></a>
+				</p>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	
+</div>

@@ -1,0 +1,41 @@
+<div id="cabecera" xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:spring="http://www.springframework.org/tags" 
+	xmlns:form="http://www.springframework.org/tags/form" version="2.0">
+
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="img_cabecera" value="/resources/images/cabecera.png" />
+	<spring:url var="inicio" value="/" />
+	<spring:message code="etiqueta_inicio" var="etiqueta_inicio" htmlEscape="false" />
+
+	<!-- Imagen de la cabecera -->
+	<a href="${inicio}" name="${fn:escapeXml(etiqueta_inicio)}" title="${fn:escapeXml(etiqueta_inicio)}"> 
+		<img src="${img_cabecera}" height="250" width="950"/>
+	</a>
+	
+	<!-- Buscador -->
+	<spring:message code="opcion_titulo" var="opcion_titulo" htmlEscape="false" />
+	<spring:message code="opcion_interpretes" var="opcion_interpretes" htmlEscape="false" />
+	<spring:message code="opcion_director" var="opcion_director" htmlEscape="false" />
+	<spring:message code="boton_buscar" var="boton_buscar" htmlEscape="false" />
+	
+	<div id="cabecera_menu">
+		<div class="buscador">
+			<form:form action="/buscador" method="POST" modelAttribute="buscador" enctype="application/x-www-form-urlencoded">
+				<spring:message code="buscador" var="etiqueta_buscador"/>
+				<span>${fn:escapeXml(etiqueta_buscador)}</span>
+				<form:input path="texto"/>
+				<form:select path="opcionBusqueda">
+					<form:option value="${fn:escapeXml(opcion_titulo)}" />
+					<form:option value="${fn:escapeXml(opcion_interpretes)}" />
+					<form:option value="${fn:escapeXml(opcion_director)}" />
+				</form:select>
+				<form:hidden path="pagina" id="pagina_oculta"/>
+				<input type="submit" value="${fn:escapeXml(boton_buscar)}" id="form_buscador" />
+			</form:form>
+		</div>
+	</div>
+</div>

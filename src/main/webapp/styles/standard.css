@@ -1,0 +1,429 @@
+/* main elements */
+
+html {
+	height: 100%;
+}
+
+body {
+	background: #1B242D;
+	height: 100%;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+body {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	background: url('http://www.hdwallpapers.in/wallpapers/striker_eureka_in_pacific_rim-1920x1080.jpg') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+a:link, a:visited { 
+	text-decoration: none;
+	color: #FFFFFF;
+} 
+
+a:hover  { 
+	text-decoration: none;
+	color: #FFFFCC;
+}
+
+a img {
+	outline : none;
+}
+
+img {
+	border: 0;
+}
+
+#wrapper {
+	width:950px;
+	min-width: 950px;
+	max-width: 950px;
+	margin-right: auto;
+	margin-left: auto;
+
+	/* fix max-width incompatibility in IE6 */
+	width:expression(document.body.clientWidth > 950? "950px": "auto" );
+	
+	overflow:hidden;
+	display:block;
+}
+
+/* cabecera */
+#cabecera {
+	margin-top: 0;
+}
+
+#cabecera a {
+	display: block;
+	height: 250px;
+}
+
+#cabecera span, select, input {
+	margin-right: 3px;
+}
+
+#cabecera_menu {
+	background: url('/resources/images/cabecera_menu.jpg') no-repeat;
+	background-size: 950px;
+	width: 950px;
+	height: 25px;
+}
+
+#cabecera_menu div {
+	position: relative;
+	float: left;
+	width: 250px;
+}
+
+#cabecera_menu div.buscador {
+	width: 400px;
+}
+
+/* buscador */
+.buscador {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	vertical-align: baseline;
+	margin-top: 2px;
+}
+
+input, select, textarea {
+	background-color: #FFFFFF;
+	color: #000000;
+	border: 2px solid #000000;
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 10px;
+}
+
+/* cuerpo */
+#main_ext {
+	float: left;
+	background: url('/resources/images/fondo.jpg') repeat-y;
+	background-size: 950px;
+}
+
+#main {
+	float: left;
+	background: url('/resources/images/fondo_inferior.jpg') no-repeat;
+	background-size: 950px;
+	background-position: bottom;
+}
+
+#main div {
+	position: relative;
+	float: left;
+}
+
+/* menu */
+#menu {
+	width: 245px;
+}
+
+.menu_superior_categoria {
+	margin-top: 10px;
+}
+
+.categoria {
+	display: block;
+	margin-top: 15px;
+}
+
+#cuerpo {
+	width: 705px;
+}
+
+/* formulario login */
+.menu_usuarios {
+	margin-top: 10px;
+}
+
+#formulario_login {
+	padding: 0px 15px 0px 15px;
+	height: 100px; /* Para empujar la imagen inferior */
+}
+
+#formulario_login {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	vertical-align: baseline;
+	text-align: right;
+}
+
+#formulario_login p {
+	width: 215px;
+	text-align: center;
+}
+
+/* listado */
+.menu_superior_lista {
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
+
+#fila_lista {
+	width: 685px;
+	background: #C8C8C8;
+	display: block;
+}
+
+#img_lista {
+	height: 116px;
+}
+
+#img_lista, #texto_lista {
+	width: 82px;
+	margin-left: 3px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+#texto_lista {
+	background: #0F1513;
+}
+
+.img_cargando {
+	background: url('/resources/images/cargando_listado.gif') no-repeat;
+	background-color: #0F1513;
+	background-position: center center;
+}
+
+.img_cargando_ficha {
+	background: url('/resources/images/cargando_ficha.gif') no-repeat;
+	background-color: #0F1513;
+	background-position: center center;
+}
+
+#texto_lista, #texto_ficha {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+	width: 584px;
+	height: 116px;
+}
+
+#texto_lista span.top {
+	vertical-align: top;
+	display: block;
+}
+
+.titulo {
+	font-size: 18px; 
+	font-family: 'Calibri';
+	color: #FF9900;
+	font-weight: bold;
+}
+
+.fecha {
+	color: #CCCCCC;
+	font-size: 12px;
+	font-family: 'Calibri';
+}
+
+.direccion {
+	color: #DDD;
+	font-size: 11px;
+	font-family: Verdana;
+}
+
+.textos {
+	font-size: 10px;
+	font-family: Verdana;
+	color: #FFFFFF;
+}
+
+/* paginador listado */
+#paginador {
+	float: left;
+	width: 685px;
+	margin-bottom: 20px;
+}
+
+#paginador .botones {
+	float: left;
+	width: 100px;
+	height: 30px;
+}
+
+.cursor {
+	cursor: pointer;
+}
+
+.inicio {
+	margin-left: 25px; 
+}
+
+.resultados {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.resultados {
+	margin-top: 8px;
+	margin-left: 40px;
+}
+
+/* ficha */
+#img_ficha, #texto_ficha {
+	height: 400px;
+	width: 313px;
+	margin-left: 3px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+#texto_ficha {
+	background: #0F1513;
+	height: 400px;
+	width: 353px;
+}
+
+#texto_ficha .titulo {
+	font-size: 14px; 
+	font-family: 'Calibri';
+	color: #FF9900;
+	font-weight: bold;
+	display: block;
+}
+
+#texto_ficha .titulo {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.etiqueta {
+	color: #9CF;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: "Verdana";
+}
+
+#texto_ficha p {
+	font-size: 0px;
+}
+
+#texto_ficha p .etiqueta {
+	display: inline-block;
+}
+
+#texto_ficha .textos, #texto_ficha img {
+	margin-left: 5px;
+}
+
+#texto_sinopsis {
+	text-align: left;
+	width: 669px;
+	background: #0F1513;
+	margin: 3px;
+	padding: 20px 5px 20px 5px;
+}
+
+#texto_sinopsis span {
+	display: block;
+}
+
+/* mensajes */
+#mensaje {
+	width: 679px;
+	background: #0F1513;
+	margin: 3px;
+}
+
+#mensaje span {
+	display: block;
+}
+
+#mensaje .textos {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	padding: 20px;
+}
+
+#mensaje .titulo {
+	padding-top: 10px;
+}
+
+/* formulario registro */
+#formulario {
+	width: 460px;
+	padding: 20px;
+}
+
+#formulario {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	vertical-align: baseline;
+	text-align: right;
+}
+
+#formulario span {
+	display: inline-block;
+}
+
+#formulario input {
+	margin: 0;
+}
+
+/* formulario inserccion */
+.formulario_insertar {
+	width: 570px;
+}
+
+.formulario_insertar select {
+	width: 125px;
+	margin-right: 0px;
+}
+
+.formulario_insertar input[type=text] {
+	width: 121px;
+}
+
+/* imagen formulario insertar */
+.formulario_thumb {
+	border: 2px solid #C8C8C8;
+	width: 82px;
+	height: 116px;
+	background: white;
+	margin-top: 3px;
+}
+
+/* formulario editar */
+.formulario_editar {
+	width: 590px !important;
+}
+
+.campo_editor {
+	width: 490px;
+	margin-right: 0px;
+}
+
+.formulario_editar select {
+	width: 494px;
+}
+
+.formulario_editar textarea {
+	width: 486px;
+}
+
+/* pie */
+#footer {
+	float: left;
+	width: 900px;
+	font-family: MS Sans Serif, Sans Serif;
+	font-size: 10px;
+}
+
+.eraser {
+	clear: both;
+}
+

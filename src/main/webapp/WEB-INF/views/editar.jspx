@@ -1,0 +1,143 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+	xmlns:jsp="http://java.sun.com/JSP/Page" 
+	xmlns:form="http://www.springframework.org/tags/form" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" id="cuerpo" version="2.0">
+	
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="img_listado" value="/resources/images/listado.png" />
+
+	<!-- Imagen superior -->
+	<img src="${img_listado}" class="menu_superior_lista"/>
+	
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="editar_titulo" var="editar_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(editar_titulo)}</span>
+			<div id="formulario" class="formulario_editar">
+				<form:form action="/editar/${pelicula.id}" method="POST" modelAttribute="pelicula" enctype="application/x-www-form-urlencoded">
+					<!-- Titulo -->
+					<spring:message code="etiqueta_titulo" var="etiqueta_titulo" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_titulo)} </span>
+					<form:input path="titulo" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Titulo original -->
+					<spring:message code="etiqueta_titulo_original" var="etiqueta_titulo_original" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_titulo_original)} </span>
+					<form:input path="tituloOriginal" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Estreno -->
+					<spring:message code="etiqueta_estreno" var="etiqueta_estreno" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_estreno)} </span>
+					<form:input path="fecha" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Nacionalidad -->
+					<spring:message code="etiqueta_nacionalidad" var="etiqueta_nacionalidad" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_nacionalidad)} </span>
+					<form:select path="nacionalidad" cssClass="campo_editor">
+						<form:options items="${paises}" itemLabel="nombreImprimible" itemValue="iso"/>
+					</form:select>
+					<br/>
+					
+					<!-- Categoría -->
+					<spring:message code="etiqueta_genero" var="etiqueta_genero" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_genero)} </span>
+					<form:select path="categoria" cssClass="campo_editor">
+						<form:options items="${categorias}" itemLabel="nombre" itemValue="id"/>
+					</form:select>
+					<br/>
+					
+					<!-- Duración -->
+					<spring:message code="etiqueta_duracion" var="etiqueta_duracion" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_duracion)} </span>
+					<form:input path="duracion" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Dirección -->
+					<spring:message code="etiqueta_direcion" var="etiqueta_direcion" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_direcion)} </span>
+					<form:input path="direccion" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Intérpretes -->
+					<spring:message code="etiqueta_interpretes" var="etiqueta_interpretes" htmlEscape="false"/>
+					<span style="vertical-align: top;">${fn:escapeXml(etiqueta_interpretes)} </span>
+					<form:textarea path="interpretes" cssClass="campo_editor" rows="2"/>
+					<br/>
+					
+					<!-- Guión -->
+					<spring:message code="etiqueta_guion" var="etiqueta_guion" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_guion)} </span>
+					<form:input path="guion" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Fotografía -->
+					<spring:message code="etiqueta_fotografia" var="etiqueta_fotografia" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_fotografia)} </span>
+					<form:input path="fotografia" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Música -->
+					<spring:message code="etiqueta_musica" var="etiqueta_musica" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_musica)} </span>
+					<form:input path="musica" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Montaje -->
+					<spring:message code="etiqueta_montaje" var="etiqueta_montaje" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_montaje)} </span>
+					<form:input path="montaje" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Disco -->
+					<spring:message code="etiqueta_disco" var="etiqueta_disco" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_disco)} </span>
+					<form:input path="disco" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Archivador -->
+					<spring:message code="etiqueta_archivador" var="etiqueta_archivador" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_archivador)} </span>
+					<form:input path="archivador" cssClass="campo_editor"/>
+					<br/>
+					
+					<!-- Sinopsis -->
+					<spring:message code="etiqueta_sinopsis" var="etiqueta_sinopsis" htmlEscape="false"/>
+					<span style="vertical-align: top;">${fn:escapeXml(etiqueta_sinopsis)} </span>
+					<form:textarea path="sinopsis" cssClass="campo_editor" rows="5"/>
+					<br/>
+					
+					<!-- Imagen -->
+					<spring:message code="etiqueta_imagen" var="etiqueta_imagen" htmlEscape="false"/>
+					<span>${fn:escapeXml(etiqueta_imagen)} </span>
+					<form:select path="img" cssClass="campo_editor">
+						<form:options items="${ficheros}"/>
+					</form:select>
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+		</div>
+	</div>
+	<c:if test="${not empty editado}">
+		<div id="fila_lista">
+			<div id="texto_sinopsis">
+				<spring:message code="editar_editado" arguments="${pelicula.titulo}" var="editar_editado" htmlEscape="false"/>
+				<spring:message code="editar_insertar_enlace" var="editar_insertar_enlace" htmlEscape="false"/>
+				<spring:message code="editar_insertar_enlace2" var="editar_insertar_enlace2" htmlEscape="false"/>
+				<spring:message code="insertar_insertado_enlace" var="insertar_insertado_enlace" htmlEscape="false"/>
+				<span class="etiqueta">${fn:escapeXml(editar_editado)} </span>
+				<spring:message code="etiqueta_insertar" var="etiqueta_insertar" htmlEscape="false"/>
+				<span class="textos">${fn:escapeXml(editar_insertar_enlace)} <a href="/usuarios/${fn:escapeXml(usuario.id)}" title="${fn:escapeXml(etiqueta_insertar)}">${fn:escapeXml(editar_insertar_enlace2)}</a></span>
+				<spring:message code="etiqueta_ficha" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_ficha" htmlEscape="false"/>
+				<span class="textos">${fn:escapeXml(insertar_insertado_enlace)} <a href="/ficha/${pelicula.id}" title="${fn:escapeXml(etiqueta_ficha)}" target="_blank">${pelicula.titulo}</a></span>
+			</div>
+		</div>
+	</c:if>
+</div>

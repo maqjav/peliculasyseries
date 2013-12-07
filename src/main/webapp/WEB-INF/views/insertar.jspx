@@ -1,0 +1,142 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+	xmlns:jsp="http://java.sun.com/JSP/Page" 
+	xmlns:form="http://www.springframework.org/tags/form" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" id="cuerpo" version="2.0">
+	
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="img_listado" value="/resources/images/listado.png" />
+
+	<!-- Imagen superior -->
+	<img src="${img_listado}" class="menu_superior_lista"/>
+	
+	<!-- Formulario de insercción -->
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="insertar_titulo" var="insertar_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(insertar_titulo)}</span>
+			<div id="formulario" class="formulario_insertar">
+				<form:form action="/insertar" method="POST" modelAttribute="inserccion" enctype="application/x-www-form-urlencoded">
+					<spring:message code="insertar_fichero" var="insertar_fichero" htmlEscape="false"/>
+					<span>${fn:escapeXml(insertar_fichero)} </span>
+					<form:select path="fichero" onchange="showImage('thumb', this)">
+						<form:options items="${inserccion.ficheros}" />
+					</form:select>
+					<br/>
+					<spring:message code="insertar_url" var="insertar_url" htmlEscape="false"/>
+					<span>${fn:escapeXml(insertar_url)} </span>
+					<form:input path="url" />
+					<br/>
+					<spring:message code="insertar_disco" var="insertar_disco" htmlEscape="false"/>
+					<span>${fn:escapeXml(insertar_disco)} </span>
+					<form:input path="disco" />
+					<br/>
+					<spring:message code="insertar_archivador" var="insertar_archivador" htmlEscape="false"/>
+					<span>${fn:escapeXml(insertar_archivador)} </span>
+					<form:input path="archivador" />
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+			<div id="thumb" class="formulario_thumb">
+
+			</div>
+		</div>
+	</div>
+	<!-- Notificación de insercción -->
+	<c:if test="${not empty pelicula}">
+		<form:form action="/editar" method="POST" modelAttribute="pelicula" enctype="application/x-www-form-urlencoded" id="form_editar">
+			<div id="fila_lista">
+				<div id="texto_sinopsis">
+					<spring:message code="insertar_insertado" arguments="${pelicula.titulo}" var="insertar_insertado" htmlEscape="false"/>
+					<spring:message code="insertar_editar_enlace" var="insertar_editar_enlace" htmlEscape="false"/>
+					<spring:message code="insertar_insertado_enlace" var="insertar_insertado_enlace" htmlEscape="false"/>
+					<span class="etiqueta">${fn:escapeXml(insertar_insertado)} </span>
+					<spring:message code="etiqueta_ficha" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_ficha" htmlEscape="false"/>
+					<span class="textos">${fn:escapeXml(insertar_insertado_enlace)} <a href="/ficha/${pelicula.id}" title="${fn:escapeXml(etiqueta_ficha)}" target="_blank">${pelicula.titulo}</a></span>
+					<spring:message code="etiqueta_editar" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_editar" htmlEscape="false"/>
+					<span class="textos">${fn:escapeXml(insertar_editar_enlace)} <a href="javascript:{}" onclick="document.getElementById('form_editar').submit(); return false;" title="${fn:escapeXml(etiqueta_editar)}">${pelicula.titulo}</a></span>
+					
+					<!-- Guardamos todos los datos para su edición -->
+					<form:hidden path="id"/>
+				</div>
+			</div>
+		</form:form>
+	</c:if>
+
+	<!-- Formulario de subida de ficheros -->
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="ficheros_titulo" var="ficheros_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(ficheros_titulo)}</span>
+			<div id="formulario" class="formulario_insertar">
+				<form:form action="/subirImagenes" modelAttribute="inserccion" method="POST" enctype="multipart/form-data">
+					<spring:message code="generar_id" var="generar_id" htmlEscape="false"/>
+					<span>${fn:escapeXml(ficheros_selecciona)} </span>
+					<form:input type="file" path="paquete" />
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+		</div>
+	</div>
+	<!-- Notificación de subida de imagenes -->
+	<c:if test="${not empty subida_imagenes_ok}">
+		<c:if test="${subida_imagenes_ok}">
+			<div id="fila_lista">
+				<div id="texto_sinopsis">
+					<spring:message code="ficheros_subidos" var="ficheros_subidos" htmlEscape="false"/>
+					<span class="etiqueta">${fn:escapeXml(ficheros_subidos)} </span>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${!subida_imagenes_ok}">
+			<div id="fila_lista">
+				<div id="texto_sinopsis">
+					<spring:message code="ficheros_error_subidos" var="ficheros_error_subidos" htmlEscape="false"/>
+					<span class="etiqueta">${fn:escapeXml(ficheros_error_subidos)} </span>
+				</div>
+			</div>
+		</c:if>
+	</c:if>
+		
+	<!-- Formulario de edición -->
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="editar_titulo" var="editar_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(editar_titulo)}</span>
+			<div id="formulario" class="formulario_insertar">
+				<form:form action="/editarFicha" method="POST" modelAttribute="buscador" enctype="application/x-www-form-urlencoded">
+					<spring:message code="editar_id" var="editar_id" htmlEscape="false"/>
+					<span>${fn:escapeXml(editar_id)} </span>
+					<form:input path="texto" />
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Formulario de generación del backup de la base de datos -->
+	<div id="fila_lista">
+		<div id="mensaje">
+			<spring:message code="generar_script_titulo" var="generar_script_titulo" htmlEscape="false"/>
+			<span class="titulo">${fn:escapeXml(generar_script_titulo)}</span>
+			<div id="formulario" class="formulario_insertar">
+				<form:form action="/generar" method="POST" modelAttribute="buscador" enctype="application/x-www-form-urlencoded">
+					<spring:message code="generar_id" var="generar_id" htmlEscape="false"/>
+					<span>${fn:escapeXml(generar_id)} </span>
+					<form:input path="texto" />
+					<br/><br/>
+					<spring:message code="boton_enviar" var="boton_enviar" htmlEscape="false"/>
+					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
+				</form:form>
+			</div>
+		</div>
+	</div>
+</div>

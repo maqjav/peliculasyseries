@@ -1,0 +1,95 @@
+<div xmlns:spring="http://www.springframework.org/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions" 
+	xmlns:util="urn:jsptagdir:/WEB-INF/tags/util"
+	xmlns:jsp="http://java.sun.com/JSP/Page" 
+	xmlns:form="http://www.springframework.org/tags/form" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" id="cuerpo" version="2.0">
+	
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+	<jsp:output omit-xml-declaration="yes" />
+	
+	<spring:url var="img_listado" value="/resources/images/listado.png" />
+
+	<!-- Imagen superior -->
+	<img src="${img_listado}" class="menu_superior_lista"/>
+	
+	<spring:message code="etiqueta_estreno" var="etiqueta_estreno" htmlEscape="false"/>
+	<spring:message code="etiqueta_nacionalidad" var="etiqueta_nacionalidad" htmlEscape="false"/>
+	<spring:message code="etiqueta_genero" var="etiqueta_genero" htmlEscape="false"/>
+	<spring:message code="etiqueta_duracion" var="etiqueta_duracion" htmlEscape="false"/>
+	<spring:message code="etiqueta_titulo_original" var="etiqueta_titulo_original" htmlEscape="false"/>
+	<spring:message code="etiqueta_direcion" var="etiqueta_direcion" htmlEscape="false"/>
+	<spring:message code="etiqueta_interpretes" var="etiqueta_interpretes" htmlEscape="false"/>
+	<spring:message code="etiqueta_guion" var="etiqueta_guion" htmlEscape="false"/>
+	<spring:message code="etiqueta_fotografia" var="etiqueta_fotografia" htmlEscape="false"/>
+	<spring:message code="etiqueta_musica" var="etiqueta_musica" htmlEscape="false"/>
+	<spring:message code="etiqueta_montaje" var="etiqueta_montaje" htmlEscape="false"/>
+	<spring:message code="etiqueta_disco" var="etiqueta_disco" htmlEscape="false"/>
+	<spring:message code="etiqueta_archivador" var="etiqueta_archivador" htmlEscape="false"/>
+	<spring:message code="etiqueta_sinopsis" var="etiqueta_sinopsis" htmlEscape="false"/>
+	<spring:message code="etiqueta_favoritos" var="etiqueta_favoritos" htmlEscape="false"/>
+	
+	<div id="fila_lista">
+		<div id="img_ficha" class="img_cargando_ficha">
+			<img src="/resources/images/ficha/${pelicula.img}" height="400" width="313" onerror="seekImg(this, 'ficha', '${pelicula.img}')" onload="afterLoad(this)"/>
+		</div>
+		<div id="texto_ficha">
+			<span class="titulo">${fn:escapeXml(pelicula.titulo)}</span>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_estreno)} </span><span class="textos">${fn:escapeXml(pelicula.fecha)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_nacionalidad)} </span><img src="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_genero)} </span><span class="textos">${fn:escapeXml(pelicula.categoria.nombre)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_duracion)} </span><span class="textos">${fn:escapeXml(pelicula.duracion)} min.</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_titulo_original)} </span><span class="textos">${fn:escapeXml(pelicula.tituloOriginal)}</span>
+			</p>
+			<br/>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_direcion)} </span><span class="textos">${fn:escapeXml(pelicula.direccion)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_interpretes)} </span><span class="textos">${fn:escapeXml(pelicula.interpretes)}</span>
+			</p>
+			<br/>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_guion)} </span><span class="textos">${fn:escapeXml(pelicula.guion)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_fotografia)} </span><span class="textos">${fn:escapeXml(pelicula.fotografia)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_musica)} </span><span class="textos">${fn:escapeXml(pelicula.musica)}</span>
+			</p>
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_montaje)} </span><span class="textos">${fn:escapeXml(pelicula.montaje)}</span>
+			</p>
+			<c:if test="${not empty usuario and usuario.permisos == 'A'}">
+			<p>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_disco)} </span><span class="textos">${fn:escapeXml(pelicula.disco)} </span>
+				<span class="etiqueta">${fn:escapeXml(etiqueta_archivador)} </span><span class="textos">${fn:escapeXml(pelicula.archivador)}</span>
+			</p>
+			</c:if>
+			<c:if test="${not empty favorito and usuario.permisos == 'N'}">
+			<p>
+				<form:form action="/usuarios/favorito" method="POST" modelAttribute="favorito" enctype="application/x-www-form-urlencoded" id="form_favorito">
+					<form:checkbox path="favorito" onchange="document.getElementById('form_favorito').submit(); return false;"/> <span class="etiqueta">${fn:escapeXml(etiqueta_favoritos)} </span>
+					<form:hidden path="id"/>
+				</form:form>
+			</p>
+			</c:if>
+		</div>
+	</div>
+	<div id="fila_lista">
+		<div id="texto_sinopsis">
+			<span class="etiqueta">${fn:escapeXml(etiqueta_sinopsis)}</span>
+			<span class="textos">${fn:escapeXml(pelicula.sinopsis)}</span>
+		</div>
+	</div>
+</div>

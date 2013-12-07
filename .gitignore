@@ -1,0 +1,12 @@
+/putty.ppk
+/.settings
+/target
+/.classpath
+/.project
+/id_openshift_ssh
+/id_openshift_ssh.pub
+target
+.settings/*
+!.settings/.jsdtscope
+.project
+.classpath
