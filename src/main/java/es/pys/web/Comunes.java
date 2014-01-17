@@ -10,6 +10,7 @@ import es.pys.model.Pelicula;
 
 public class Comunes {
 
+	
 	/**
 	 * Carga los datos necesarios para mostrar las listas
 	 * 
