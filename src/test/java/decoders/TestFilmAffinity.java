@@ -12,7 +12,7 @@ import es.pys.web.PeliculaController;
 
 public class TestFilmAffinity extends PeliculaController {
 
-	private final static String url = "http://www.filmaffinity.com/es/film698708.html";
+	private final static String url = "http://www.filmaffinity.com/es/film566316.html";
 
 	@Test
 	public void extraerContenido() {

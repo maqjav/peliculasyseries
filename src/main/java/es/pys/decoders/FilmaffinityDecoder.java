@@ -47,7 +47,7 @@ public class FilmaffinityDecoder extends Decoder {
 		props.setTranslateSpecialEntities(true);
 
 		// Paraseamos la URL dada
-		TagNode tagNode = new HtmlCleaner(props).clean(new URL(url), "ISO-8859-1");
+		TagNode tagNode = new HtmlCleaner(props).clean(new URL(url), "UTF-8");
 
 		log.debug("Buscando el titulo...");
 
