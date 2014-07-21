@@ -488,6 +488,7 @@ public class PeliculaController {
 			}
 
 			contenido = decoder.sacarDatos(url);
+			
 
 			// Datos de affinity
 			Pelicula pelicula;
