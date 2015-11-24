@@ -238,8 +238,13 @@ public class FilmaffinityDecoder extends Decoder {
 			// tal caso no se trata de un listado
 			if (!tag.getElementListByName("img", true).isEmpty())
 				return null;
-			else
-				return tag.getElementListByName("a", true);
+			else {
+				List<TagNode> nodes = tag.getElementListByName("a", true);
+				if (nodes.isEmpty())
+					return null;
+				
+				return nodes;
+			}
 		} else
 			return null;
 	}
