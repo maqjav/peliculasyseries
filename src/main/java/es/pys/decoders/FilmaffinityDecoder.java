@@ -166,8 +166,17 @@ public class FilmaffinityDecoder extends Decoder {
 					HtmlNode nodo = (HtmlNode) tag.getChildren().get(i);
 
 					// Sacamos el texto
-					String texto = ((ContentNode) nodo).toString();
-
+					String texto = "";
+					
+					// Si se trata de un TagNode intenta acceder al siguiente nivel
+					if (nodo instanceof TagNode) {
+						texto = extraerContenido((TagNode) nodo);
+					} 
+					// Para cualquier otro caso intenta obtener el valor del nodo
+					else {
+						texto = ((ContentNode) nodo).toString();
+					}
+					
 					// Corregimos errores en el texto
 					texto = corregirTextos(texto);
 
