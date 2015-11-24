@@ -113,7 +113,7 @@ public class FilmaffinityDecoder extends Decoder {
 						// En caso de ser un listado de enlaces se obtendrá el
 						// listado de tags con cada enlace
 						List<TagNode> tags = checkEnlaces(tr);
-						if (tags != null) {
+						if (tags != null && !tags.isEmpty()) {
 							for (TagNode a : tags) {
 								String contenido = extraerContenido(a);
 								if (valor.equals(""))
@@ -239,11 +239,7 @@ public class FilmaffinityDecoder extends Decoder {
 			if (!tag.getElementListByName("img", true).isEmpty())
 				return null;
 			else {
-				List<TagNode> nodes = tag.getElementListByName("a", true);
-				if (nodes.isEmpty())
-					return null;
-				
-				return nodes;
+				return tag.getElementListByName("a", true);
 			}
 		} else
 			return null;
