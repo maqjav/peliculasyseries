@@ -483,7 +483,7 @@ public class PeliculaController {
 			Decoder decoder = null;
 			if (url.startsWith("http://www.zinema.com")) {
 				decoder = DecoderFactory.getDecoder(DecoderType.ZINEMA);
-			} else if (url.startsWith("http://www.filmaffinity.com")) {
+			} else if (url.contains("filmaffinity.com")) {
 				decoder = DecoderFactory.getDecoder(DecoderType.FILMAFFINITY);
 			}
 
