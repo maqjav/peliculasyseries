@@ -1,6 +1,7 @@
 package decoders;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +16,7 @@ import es.pys.decoders.factory.DecoderType;
 @ContextConfiguration(locations = { "classpath:**/META-INF/spring/applicationContext.xml"})
 public class TestFilmAffinity {
 
-	private final static String url = "http://www.filmaffinity.com/es/film376816.html";
+	private final static String url = "https://www.filmaffinity.com/es/film486156.html";
 
 	@Test
 	public void extraerContenido() {
@@ -23,6 +24,9 @@ public class TestFilmAffinity {
 			Decoder decoder = DecoderFactory.getDecoder(DecoderType.FILMAFFINITY);
 			Map<String, String> contenido = decoder.sacarDatos(url);
 
+			for (Entry<String, String> entry : contenido.entrySet())
+				System.out.println(entry.getKey() + " : " + entry.getValue());
+				
 			//Pelicula pelicula = introducirDatosZinema(contenido, "", "", "");
 			//System.out.println(pelicula.toString());
 		}

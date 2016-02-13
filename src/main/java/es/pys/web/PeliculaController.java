@@ -588,13 +588,19 @@ public class PeliculaController {
 				pelicula.setNacionalidad(pais);
 			}
 
-			// Buscamos la categoría con las primeras 4 letras obtenidas
+			// Si existen multiples categorias va buscando de una en una hasta dar con una existente
 			List<Categoria> categoria = null;
-			String nombre = contenido.get("genero").substring(0, 1).toUpperCase()
-					+ contenido.get("genero").substring(1, 4).toLowerCase();
-			categoria = Categoria.findCategoriasByNombre(nombre);
-
-			pelicula.setCategoria(categoria.get(0));
+			for (String genero : contenido.get("genero").split(", ")) {
+				// Buscamos la categoría con las primeras 4 letras obtenidas
+				String nombreCategoria = genero.substring(0, 1).toUpperCase() + genero.substring(1, 4).toLowerCase();
+				categoria = Categoria.findCategoriasByNombre(nombreCategoria);
+				if (categoria != null)
+					break;
+			}
+			
+			if (categoria != null && !categoria.isEmpty()) {
+				pelicula.setCategoria(categoria.get(0));
+			}
 			pelicula.setDuracion(contenido.get("duracion"));
 			pelicula.setTituloOriginal(contenido.get("tituloOriginal"));
 			pelicula.setDireccion(contenido.get("director"));
