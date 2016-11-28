@@ -64,7 +64,7 @@ img {
 	height: 250px;
 }
 
-#cabecera span, select, input {
+#buscador span, #buscador select, #buscador input {
 	margin-right: 3px;
 }
 
