@@ -23,7 +23,7 @@ public class FilmaffinityDecoder extends Decoder {
 	// Listado con los campos que se van a extraer
 	// Si se quieren añadir mas es necesario modificar tambien el listado de
 	// parámetros en el MAP
-	private static String atributos[] = { "TÍTULO ORIGINAL", "AÑO", "DURACIÓN", "PAÍS", "DIRECTOR", "GUIÓN", "MÚSICA",
+	private static String atributos[] = { "TÍTULO ORIGINAL", "AÑO", "DURACIÓN", "PAÍS", "DIRECTOR", "GUION", "MÚSICA",
 			"FOTOGRAFÍA", "REPARTO", "GÉNERO", "SINOPSIS" };
 
 	public FilmaffinityDecoder() {
@@ -205,7 +205,7 @@ public class FilmaffinityDecoder extends Decoder {
 			return "pais";
 		else if (atributo.equals("DIRECTOR"))
 			return "director";
-		else if (atributo.equals("GUIÓN"))
+		else if (atributo.equals("GUION"))
 			return "guion";
 		else if (atributo.equals("MÚSICA"))
 			return "musica";

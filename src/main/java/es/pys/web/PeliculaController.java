@@ -694,12 +694,15 @@ public class PeliculaController {
 			List<Categoria> categoria = null;
 			for (int i = 0; i < generos.length; i++) {
 				String nombre = generos[i].substring(0, 1).toUpperCase() + generos[i].substring(1, 4).toLowerCase();
+				if (nombre.equals("Fantástico")) {
+					nombre = "Aventuras";
+				}
 				categoria = Categoria.findCategoriasByNombre(nombre);
 				if (!categoria.isEmpty())
 					break;
 			}
 
-			pelicula.setCategoria(categoria.get(0));
+			pelicula.setCategoria(categoria != null ? categoria.get(0) : null);
 			pelicula.setSinopsis(contenido.get("sinopsis"));
 			pelicula.setMontaje("");
 			pelicula.setTituloOriginal(contenido.get("tituloOriginal"));

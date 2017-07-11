@@ -476,8 +476,8 @@ public class Pelicula {
 		datos += "\n TITULO: " + titulo;
 		datos += "\n TITULO ORIGINAL: " + tituloOriginal;
 		datos += "\n FECHA: " + fecha;
-		datos += "\n NACIONALIDAD: " + nacionalidad.getNombreImprimible();
-		datos += "\n CATEGORIA: " + categoria.getNombre();
+		datos += "\n NACIONALIDAD: " + (nacionalidad != null ? nacionalidad.getNombreImprimible() : "");
+		datos += "\n CATEGORIA: " + (categoria != null ? categoria.getNombre() : "");
 		datos += "\n DIRECCION: " + direccion;
 		datos += "\n DURACCION: " + duracion;
 		datos += "\n INTERPRETES: " + interpretes;
