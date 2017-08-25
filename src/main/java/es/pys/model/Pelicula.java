@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
@@ -43,12 +44,12 @@ public class Pelicula {
 
 	@ManyToOne
 	@NotNull
-	@Column(name = "nacionalidad")
+	@JoinColumn(name = "nacionalidad")
 	private Pais nacionalidad;
 
 	@ManyToOne
 	@NotNull
-	@Column(name = "categoria")
+	@JoinColumn(name = "categoria")
 	private Categoria categoria;
 
 	@NotNull
