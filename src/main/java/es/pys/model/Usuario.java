@@ -43,6 +43,7 @@ public class Usuario {
 	private Long id;
 
 	@ManyToOne
+	@Column(name = "avatar")
 	private Avatar avatar;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -50,14 +51,17 @@ public class Usuario {
 
 	@NotNull
 	@Size(max = 8)
+	@Column(name = "nombre")
 	private String nombre;
 
 	@NotNull
 	@Size(max = 8)
+	@Column(name = "contrasenia")
 	private String contrasenia;
 
 	@NotNull
 	@Size(max = 1)
+	@Column(name = "permisos")
 	private String permisos;
 
 	@PersistenceContext

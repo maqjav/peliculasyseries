@@ -28,9 +28,11 @@ public class Categoria {
 
 	@NotNull
 	@Size(max = 50)
+	@Column(name = "nombre")
 	private String nombre;
 
 	@NotNull
+	@Column(name = "activo")
 	private Boolean activo;
 	
 	@PersistenceContext

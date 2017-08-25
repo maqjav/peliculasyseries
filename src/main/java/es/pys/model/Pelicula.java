@@ -29,6 +29,7 @@ public class Pelicula {
 
 	@NotNull
 	@Size(max = 200)
+	@Column(name = "titulo")
 	private String titulo;
 
 	@NotNull
@@ -37,49 +38,62 @@ public class Pelicula {
 	private String tituloOriginal;
 
 	@NotNull
+	@Column(name = "fecha")
 	private Integer fecha;
 
 	@ManyToOne
 	@NotNull
+	@Column(name = "nacionalidad")
 	private Pais nacionalidad;
 
 	@ManyToOne
 	@NotNull
+	@Column(name = "categoria")
 	private Categoria categoria;
 
 	@NotNull
 	@Size(max = 200)
+	@Column(name = "direccion")
 	private String direccion;
 
 	@Size(max = 20)
+	@Column(name = "duracion")
 	private String duracion;
 
 	@Size(max = 500)
+	@Column(name = "interpretes")
 	private String interpretes;
 
 	@Size(max = 200)
+	@Column(name = "guion")
 	private String guion;
 
 	@Size(max = 300)
+	@Column(name = "fotografia")
 	private String fotografia;
 
 	@Size(max = 200)
+	@Column(name = "musica")
 	private String musica;
 
 	@Size(max = 200)
+	@Column(name = "montaje")
 	private String montaje;
 
 	@Size(max = 20)
+	@Column(name = "disco")
 	private String disco;
 
+	@Column(name = "archivador")
 	private Integer archivador;
 
 	@NotNull
-	@Column(columnDefinition = "TEXT")
+	@Column(name = "sinopsis", columnDefinition = "TEXT")
 	private String sinopsis;
 
 	@NotNull
 	@Size(max = 200)
+	@Column(name = "img")
 	private String img;
 
 	@PersistenceContext
