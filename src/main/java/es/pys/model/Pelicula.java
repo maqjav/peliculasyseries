@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class Pelicula {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
