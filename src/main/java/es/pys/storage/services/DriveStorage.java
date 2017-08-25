@@ -1,7 +1,6 @@
 package es.pys.storage.services;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -9,6 +8,8 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
@@ -98,13 +98,10 @@ public class DriveStorage extends BaseStorage implements Storage {
 								.debug("Se va a procesar a sincronizar Drive con otro Storage para obtener el ID: "
 										+ fileId);
 						syncStorage(fichero, folderName);
-						FileInputStream fileInputStream;
 						if (getFolderType(folderName).equals(FolderType.FICHA))
-							fileInputStream = new FileInputStream(new File(getImagesFichaPath(fileName)));
+							return java.nio.file.Files.readAllBytes(new File(getImagesFichaPath(fileName)).toPath());
 						else
-							fileInputStream = new FileInputStream(new File(getImagesListadoPath(fileName)));
-
-						return IOUtils.toByteArray(fileInputStream);
+							return java.nio.file.Files.readAllBytes(new File(getImagesListadoPath(fileName)).toPath());
 					} else {
 						log.debug("Se va a procesar a obtener de Drive el ID: " + fileId);
 						com.google.api.services.drive.model.File file = getDriveService().files().get(fileId).execute();
@@ -334,8 +331,7 @@ public class DriveStorage extends BaseStorage implements Storage {
 			GeneralSecurityException, URISyntaxException {
 		// Subimos el fichero
 		String fileName = file.getName();
-		ConfigurableMimeFileTypeMap mimeTypesMap = new ConfigurableMimeFileTypeMap();
-		String cloudId = createNewFile(fileName, mimeTypesMap.getContentType(file), folderId, file);
+		String cloudId = createNewFile(fileName, MimetypesFileTypeMap.getDefaultFileTypeMap().getContentType(file), folderId, file);
 
 		// Guardamos en la base de datos el identificador
 		Fichero imagen = Fichero.findFicheroByNombre(fileName);

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,8 +111,8 @@ public abstract class BaseStorage implements Storage {
 
 	protected byte[] loadLocalFile(String fileName, String folderName) throws StorageException {
 		try {
-			return IOUtils.toByteArray(new FileInputStream(new File(getImagesPath()
-					+ completePath(folderName, fileName))));
+			return Files.readAllBytes(new File(getImagesPath()
+					+ completePath(folderName, fileName)).toPath());
 		}
 		catch (FileNotFoundException e) {
 			log.error("No se ha podido cargar el fichero: " + fileName + " del directorio: " + folderName);
