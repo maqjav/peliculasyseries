@@ -26,7 +26,7 @@ public class Avatar {
 
 	@NotNull
 	@Size(max = 100)
-	@Column(name = "content-type")
+	@Column(name = "content_type")
 	private String contentType;
 
 	@NotNull
