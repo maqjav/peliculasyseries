@@ -29,18 +29,23 @@ public class Fichero {
 
 	@NotNull
 	@Size(max = 250)
+	@Column(name = "nombre_fichero")
 	private String nombreFichero;
 
 	// 4Sync listado
+	@Column(name = "_4sync_idl")
 	private Long _4syncIdL;
 
 	// 4Sync ficha
+	@Column(name = "_4sync_idf")
 	private Long _4syncIdF;
 
 	// Google Drive listado
+	@Column(name = "google_drive_idl")
 	private String googleDriveIdL;
 
 	// Google Drive ficha
+	@Column(name = "google_drive_idf")
 	private String googleDriveIdF;
 
 	@NotNull

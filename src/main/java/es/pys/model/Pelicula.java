@@ -33,6 +33,7 @@ public class Pelicula {
 
 	@NotNull
 	@Size(max = 200)
+	@Column(name = "titulo_original")
 	private String tituloOriginal;
 
 	@NotNull

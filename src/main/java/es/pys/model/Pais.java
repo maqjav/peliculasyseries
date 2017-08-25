@@ -25,13 +25,16 @@ public class Pais {
 
 	@NotNull
 	@Size(max = 80)
+	@Column(name = "nombre_imprimible")
 	private String nombreImprimible;
 
 	@NotNull
 	@Size(max = 3)
+	@Column(name = "iso3")
 	private String iso3;
 
 	@NotNull
+	@Column(name = "numero")
 	private Integer numero;
 
 	@PersistenceContext

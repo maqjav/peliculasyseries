@@ -26,12 +26,15 @@ public class Avatar {
 
 	@NotNull
 	@Size(max = 100)
+	@Column(name = "content-type")
 	private String contentType;
 
 	@NotNull
+	@Column(name = "content_length")
 	private Long contentLength;
 
 	@NotNull
+	@Column(name = "fichero")
 	private byte[] fichero;
 
 	@PersistenceContext
