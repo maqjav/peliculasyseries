@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import es.pys.storage.Storage;
 import es.pys.storage.services.DriveStorage;
 import es.pys.storage.services.LocalStorage;
-import es.pys.storage.services._4SyncStorage;
 
 @Configuration
 @ComponentScan("es.pys.storage.factory")
@@ -16,9 +15,6 @@ public class StorageFactory {
 
 	@Autowired
 	private DriveStorage driveStorage;
-
-	@Autowired
-	private _4SyncStorage _4syncStorage;
 
 	@Autowired
 	private LocalStorage localStorage;
@@ -35,8 +31,6 @@ public class StorageFactory {
 	public Storage getStorage(StorageType storageType) {
 		if (storageType.equals(StorageType.DRIVE))
 			return driveStorage;
-		else if (storageType.equals(StorageType._4SYNC))
-			return _4syncStorage;
 		else
 			return localStorage;
 	}
