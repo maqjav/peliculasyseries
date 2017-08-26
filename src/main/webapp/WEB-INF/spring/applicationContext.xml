@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd         
+  	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd    
+  	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd    
+  	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
+
+    <context:component-scan base-package="es.pys" />
+    
+    <!-- Turns on support for mapping requests to Spring MVC @Controller methods 
+		Also registers default Formatters and Validators for use across all @Controllers -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>image/jpeg</value>
+						<value>image/png</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources -->
+	<mvc:resources location="/, file:#{systemEnvironment['OPENSHIFT_DATA_DIR']}" mapping="/resources/**" cache-period="2592000"/>
+
+	<!-- Allows for mapping the DispatcherServlet to "/" by forwarding static 
+		resource requests to the container's default Servlet -->
+	<mvc:default-servlet-handler />
+
+	<!-- Register "global" interceptor beans to apply to all registered HandlerMappings -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/resources/**" />
+			<mvc:exclude-mapping path="/images/**" />
+	      	<bean class="es.pys.web.CommonBeansInterceptor" />
+      	</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- Resolves localized messages*.properties and application.properties 
+		files in the application to allow for internationalization. The messages*.properties 
+		files translate Roo generated messages which are part of the admin interface, 
+		the application.properties resource bundle localizes all application specific 
+		messages such as entity names and menu items. -->
+	<bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
+		id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"
+		p:fallbackToSystemLocale="false" />
+
+	<!-- Store preferred language configuration in a cookie -->
+	<bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
+		id="localeResolver" p:cookieName="locale" />
+
+	<!-- Definición de vistas con Tiles -->
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer" id="tilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/views/views.xml</value>
+			</list>
+		</property>
+	</bean>
+    
+    <!-- Subir ficheros -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <property name="maxUploadSize" value="5242880" /> <!-- 5MB -->
+        
+        <!-- max size of file in memory (in bytes) -->
+        <property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+    </bean>
+    
+    <!-- Transacciones -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="persistenceUnit"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <beans profile="default">
+	    <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+	        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://localhost:3306/maqjav"/>
+	        <property name="username" value="root"/>
+	        <property name="password" value="root"/>
+	        <property name="testOnBorrow" value="true"/>
+	        <property name="testOnReturn" value="true"/>
+	        <property name="testWhileIdle" value="true"/>
+	        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+	        <property name="numTestsPerEvictionRun" value="3"/>
+	        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+	        <property name="validationQuery" value="SELECT 1"/>
+	    </bean>
+    </beans>
+    
+    <beans profile="openshift">
+	    <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+	        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	        <property name="url" value="jdbc:mysql://${MYSQL_SERVICE_HOST}:${MYSQL_SERVICE_PORT}/${MYSQL_DB}"/>
+	        <property name="username" value="${MYSQL_USER}"/>
+	        <property name="password" value="${MYSQL_PASSWORD}"/>
+	        <property name="testOnBorrow" value="true"/>
+	        <property name="testOnReturn" value="true"/>
+	        <property name="testWhileIdle" value="true"/>
+	        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+	        <property name="numTestsPerEvictionRun" value="3"/>
+	        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+	        <property name="validationQuery" value="SELECT 1"/>
+	    </bean>
+    </beans>
+</beans>
