@@ -18,7 +18,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.pys.dao.IFicheroDao;
+import es.pys.dao.IPaisDao;
+import es.pys.dao.IPeliculaDao;
+import es.pys.dao.IUsuarioDao;
 import es.pys.decoders.factory.Decoder;
 import es.pys.decoders.factory.DecoderFactory;
 import es.pys.decoders.factory.DecoderType;
@@ -46,10 +49,9 @@ import es.pys.storage.factory.StorageFactory;
 
 @RequestMapping("/")
 @Controller
-@ComponentScan("es.pys.web")
-public class PeliculaController {
+public class PeliculaController extends BaseController {
 
-	private static Logger log = LogManager.getRootLogger();
+	private final Logger log = LogManager.getRootLogger();
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource messageSource;
@@ -59,8 +61,20 @@ public class PeliculaController {
 
 	@Autowired
 	private Sesion sesion;
+	
+	@Autowired
+	private IPeliculaDao peliculaDao;
+	
+	@Autowired
+	private IUsuarioDao usuarioDao;
+	
+	@Autowired
+	private IFicheroDao ficheroDao;
+	
+	@Autowired
+	private IPaisDao paisDao;
 
-	private static Integer PAG_SIZE = 20;
+	private final Integer PAG_SIZE = 20;
 
 	/**
 	 * Función de entrada de la aplicación. Obtiene el listado de peliculas
@@ -76,12 +90,12 @@ public class PeliculaController {
 	 */
 	@RequestMapping(produces = "text/html")
 	public String listar(Model uiModel, @RequestParam(value = "page", required = false) Integer pagina) {
-		List<Pelicula> peliculas = Pelicula.findAllPeliculas(obtenerPosicion(pagina), PAG_SIZE);
+		List<Pelicula> peliculas = peliculaDao.findAllPeliculas(obtenerPosicion(pagina), PAG_SIZE);
 
-		Long total = Pelicula.countPeliculas();
+		Long total = peliculaDao.countPeliculas();
 
 		// Insertamos los datos necesarios para la portada
-		Comunes.cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
+		cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
 
 		log.debug("Listando la pagina: " + pagina);
 
@@ -106,23 +120,23 @@ public class PeliculaController {
 		Long total = new Long(0);
 		if (opcion.equals(messageSource.getMessage("opcion_titulo", null, new Locale("es_ES")))) {
 			// Buscamos por título
-			peliculas = Pelicula.findPeliculasByTitulo(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
+			peliculas = peliculaDao.findPeliculasByTitulo(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
 					PAG_SIZE);
-			total = Pelicula.countPeliculasByTitulo(buscador.getTexto());
+			total = peliculaDao.countPeliculasByTitulo(buscador.getTexto());
 		} else if (opcion.equals(messageSource.getMessage("opcion_director", null, new Locale("es_ES")))) {
 			// Buscamos por director
-			peliculas = Pelicula.findPeliculasByDirector(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
+			peliculas = peliculaDao.findPeliculasByDirector(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
 					PAG_SIZE);
-			total = Pelicula.countPeliculasByDirector(buscador.getTexto());
+			total = peliculaDao.countPeliculasByDirector(buscador.getTexto());
 		} else if (opcion.equals(messageSource.getMessage("opcion_interpretes", null, new Locale("es_ES")))) {
 			// Buscamos por intérprete
-			peliculas = Pelicula.findPeliculasByInterprete(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
+			peliculas = peliculaDao.findPeliculasByInterprete(buscador.getTexto(), obtenerPosicion(buscador.getPagina()),
 					PAG_SIZE);
-			total = Pelicula.countPeliculasByInterpretes(buscador.getTexto());
+			total = peliculaDao.countPeliculasByInterpretes(buscador.getTexto());
 		} else if (opcion.equals("")) {
 			// Mostramos todo
-			peliculas = Pelicula.findAllPeliculas(obtenerPosicion(buscador.getPagina()), PAG_SIZE);
-			total = Pelicula.countPeliculas();
+			peliculas = peliculaDao.findAllPeliculas(obtenerPosicion(buscador.getPagina()), PAG_SIZE);
+			total = peliculaDao.countPeliculas();
 		}
 
 		if (peliculas == null || peliculas.isEmpty()) {
@@ -133,7 +147,7 @@ public class PeliculaController {
 			log.debug("No se han encontrado datos en la busqueda");
 			return "mensaje";
 		} else {
-			Comunes.cargaDatosListado(uiModel, buscador, peliculas, buscador.getPagina(), total, true);
+			cargaDatosListado(uiModel, buscador, peliculas, buscador.getPagina(), total, true);
 			log.debug("Se han encontrado registros en la busqueda");
 			return "index";
 		}
@@ -157,12 +171,12 @@ public class PeliculaController {
 		Long total = new Long(0);
 		if (id != null) {
 			// Buscamos por categoría
-			peliculas = Pelicula.findPeliculasByCategoria(id, obtenerPosicion(pagina), PAG_SIZE);
-			total = Pelicula.countPeliculasByCategoria(id);
+			peliculas = peliculaDao.findPeliculasByCategoria(id, obtenerPosicion(pagina), PAG_SIZE);
+			total = peliculaDao.countPeliculasByCategoria(id);
 		} else {
 			// Mostramos todo
-			peliculas = Pelicula.findAllPeliculas(obtenerPosicion(pagina), PAG_SIZE);
-			total = Pelicula.countPeliculas();
+			peliculas = peliculaDao.findAllPeliculas(obtenerPosicion(pagina), PAG_SIZE);
+			total = peliculaDao.countPeliculas();
 		}
 
 		if (peliculas == null || peliculas.isEmpty()) {
@@ -173,7 +187,7 @@ public class PeliculaController {
 			log.debug("No se han encontrado datos en la busqueda");
 			return "mensaje";
 		} else {
-			Comunes.cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
+			cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
 			log.debug("Se han encontrado registros en la busqueda");
 			return "index";
 		}
@@ -213,7 +227,7 @@ public class PeliculaController {
 		}
 
 		// Insertamos el listado de ficheros disponibles
-		inserccion.setFicheros(Fichero.getFicherosDisponibles());
+		inserccion.setFicheros(ficheroDao.getFicherosDisponibles());
 
 		// Cargamos el archivador predeterminado
 		inserccion.setArchivador(messageSource.getMessage("archivador", null, new Locale("es_ES")));
@@ -222,7 +236,7 @@ public class PeliculaController {
 		uiModel.addAttribute("buscador", new Buscador());
 
 		// Insertamos el listado de categorías
-		uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+		uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 		// Insertamos el objeto inserccion
 		uiModel.addAttribute("inserccion", inserccion);
@@ -245,13 +259,13 @@ public class PeliculaController {
 		log.debug("Se procede a editar la pelicula: " + pelicula.getTitulo());
 
 		// Recargamos la pelicula desde la base de datos
-		pelicula = Pelicula.findPelicula(pelicula.getId());
+		pelicula = peliculaDao.findPelicula(pelicula.getId());
 
 		// Recargamos el listado de paises
-		uiModel.addAttribute("paises", Pais.findAllPaises());
+		uiModel.addAttribute("paises", paisDao.findAllPaises());
 
 		// Añadimos la imagen de la pelicula a editar
-		List<String> imagenes = Fichero.getFicherosDisponibles();
+		List<String> imagenes = ficheroDao.getFicherosDisponibles();
 
 		if (!imagenes.contains(pelicula.getImg()))
 			imagenes.add(0, pelicula.getImg());
@@ -278,13 +292,13 @@ public class PeliculaController {
 		log.debug("Se procede a editar la pelicula: " + buscador.getTexto());
 
 		// Recargamos la pelicula desde la base de datos
-		Pelicula pelicula = Pelicula.findPelicula(new Long(buscador.getTexto()));
+		Pelicula pelicula = peliculaDao.findPelicula(new Long(buscador.getTexto()));
 
 		// Recargamos el listado de paises
-		uiModel.addAttribute("paises", Pais.findAllPaises());
+		uiModel.addAttribute("paises", paisDao.findAllPaises());
 
 		// Recargamos el listado de imagenes disponibles
-		List<String> imagenes = Fichero.getFicherosDisponibles();
+		List<String> imagenes = ficheroDao.getFicherosDisponibles();
 
 		// Añadimos la imagen de la pelicula a editar
 		if (!imagenes.contains(pelicula.getImg()))
@@ -316,7 +330,7 @@ public class PeliculaController {
 		Long id = new Long(buscador.getTexto());
 
 		// Obtenemos todos los resultados desde el ID dado
-		List<Pelicula> peliculas = Pelicula.findPeliculasById(id);
+		List<Pelicula> peliculas = peliculaDao.findPeliculasById(id);
 
 		String datos = "";
 
@@ -392,7 +406,7 @@ public class PeliculaController {
 		pelicula.setId(id);
 
 		// Actualizamos
-		pelicula.merge();
+		peliculaDao.merge(pelicula);
 
 		// Insertamos el mensaje de notificación
 		uiModel.addAttribute("editado", true);
@@ -459,7 +473,7 @@ public class PeliculaController {
 
 		// Recargamos el listado de ficheros disponibles para el combo
 		// No se guardan entre vistas
-		inserccion.setFicheros(Fichero.getFicherosDisponibles());
+		inserccion.setFicheros(ficheroDao.getFicherosDisponibles());
 
 		return respuesta;
 	}
@@ -516,7 +530,7 @@ public class PeliculaController {
 			uiModel.addAttribute("buscador", new Buscador());
 
 			// Insertamos el listado de categorías
-			uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+			uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 			return "administracion";
 		}
@@ -545,7 +559,7 @@ public class PeliculaController {
 	 *             Se ha producido un error al intentar insertar una película de
 	 *             zinema
 	 */
-	protected static Pelicula introducirDatosZinema(Map<String, String> contenido, String fichero, String disco,
+	protected Pelicula introducirDatosZinema(Map<String, String> contenido, String fichero, String disco,
 			String archivador) throws Exception {
 		try {
 			Pelicula pelicula = new Pelicula();
@@ -568,7 +582,7 @@ public class PeliculaController {
 					nacionalidades[0] = "Estados Unidos";
 
 				// Buscamos el pais
-				Pais pais = Pais.findPaisByNombre(nacionalidades[0]);
+				Pais pais = paisDao.findPaisByNombre(nacionalidades[0]);
 				pelicula.setNacionalidad(pais);
 			} else if (contenido.get("pais").contains(",")) {
 				String[] nacionalidades = contenido.get("pais").split(", ");
@@ -577,14 +591,14 @@ public class PeliculaController {
 					nacionalidades[0] = "España";
 
 				// Buscamos el pais
-				Pais pais = Pais.findPaisByNombre(nacionalidades[0]);
+				Pais pais = paisDao.findPaisByNombre(nacionalidades[0]);
 				pelicula.setNacionalidad(pais);
 			} else {
 				if (contenido.get("pais").equals("Español"))
 					contenido.put("pais", "España");
 
 				// Buscamos el pais
-				Pais pais = Pais.findPaisByNombre(contenido.get("pais"));
+				Pais pais = paisDao.findPaisByNombre(contenido.get("pais"));
 				pelicula.setNacionalidad(pais);
 			}
 
@@ -593,7 +607,7 @@ public class PeliculaController {
 			for (String genero : contenido.get("genero").split(", ")) {
 				// Buscamos la categoría con las primeras 4 letras obtenidas
 				String nombreCategoria = genero.substring(0, 1).toUpperCase() + genero.substring(1, 4).toLowerCase();
-				categoria = Categoria.findCategoriasByNombre(nombreCategoria);
+				categoria = categoriaDao.findCategoriasByNombre(nombreCategoria);
 				if (categoria != null)
 					break;
 			}
@@ -619,7 +633,7 @@ public class PeliculaController {
 			pelicula.setImg(fichero);
 			pelicula.setDisco(disco);
 			pelicula.setArchivador(new Integer(archivador));
-			pelicula.persist();
+			peliculaDao.persist(pelicula);
 
 			// Actualizamos el fichero para que deje de aparecer en el combo
 			ficheroInsertado(fichero);
@@ -637,11 +651,11 @@ public class PeliculaController {
 	 * 
 	 * @param nombreFichero
 	 */
-	private static void ficheroInsertado(String nombreFichero) {
-		Fichero imagen = Fichero.findFicheroByNombre(nombreFichero);
+	private void ficheroInsertado(String nombreFichero) {
+		Fichero imagen = ficheroDao.findFicheroByNombre(nombreFichero);
 		if (imagen != null) {
 			imagen.setInsertado(true);
-			imagen.merge();
+			ficheroDao.merge(imagen);
 		}
 	}
 
@@ -677,7 +691,7 @@ public class PeliculaController {
 			String idPais = contenido.get("pais").replace(".jpg", "").toUpperCase();
 			if (idPais.equals("GB"))
 				idPais = "UK";
-			Pais pais = Pais.findPais(idPais);
+			Pais pais = paisDao.findPais(idPais);
 
 			pelicula.setNacionalidad(pais);
 			pelicula.setDireccion(contenido.get("director"));
@@ -697,7 +711,7 @@ public class PeliculaController {
 				if (nombre.equals("Fantástico")) {
 					nombre = "Aventuras";
 				}
-				categoria = Categoria.findCategoriasByNombre(nombre);
+				categoria = categoriaDao.findCategoriasByNombre(nombre);
 				if (!categoria.isEmpty())
 					break;
 			}
@@ -709,7 +723,7 @@ public class PeliculaController {
 			pelicula.setImg(fichero);
 			pelicula.setDisco(disco);
 			pelicula.setArchivador(new Integer(archivador));
-			pelicula.persist();
+			peliculaDao.persist(pelicula);
 
 			// Actualizamos el fichero para que deje de aparecer en el combo
 			ficheroInsertado(fichero);
@@ -736,12 +750,12 @@ public class PeliculaController {
 		log.debug("Se procede a visualizar la ficha con ID: " + id);
 
 		// Recuperamos el usuario completo
-		Usuario usuario = Usuario.findUsuario(sesion.getId());
+		Usuario usuario = usuarioDao.findUsuario(sesion.getId());
 
 		Pelicula pelicula = null;
 		if (id != null) {
 			// Obtenemos los datos de la película
-			pelicula = Pelicula.findPelicula(id);
+			pelicula = peliculaDao.findPelicula(id);
 			cargaDatosFicha(uiModel, new Buscador(), pelicula);
 
 			// Verificamos si la pelicula es una favorita del usuario conectado
@@ -797,7 +811,7 @@ public class PeliculaController {
 		uiModel.addAttribute("buscador", buscador);
 
 		// Insertamos el listado de categorías
-		uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+		uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 		// Insertamos los textos del mensaje
 		uiModel.addAttribute("titulo", titulo);
@@ -819,7 +833,7 @@ public class PeliculaController {
 		uiModel.addAttribute("buscador", new Buscador());
 
 		// Insertamos el listado de categorías
-		uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+		uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 		// Insertamos los textos del mensaje
 		uiModel.addAttribute("pelicula", pelicula);

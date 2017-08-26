@@ -18,7 +18,8 @@
 	<c:forEach items="${categorias}" var="categoria">
 		<c:if test="${categoria.activo}">
 			<spring:message code="etiqueta_categoria" arguments="${categoria.nombre}" var="etiqueta_categoria" htmlEscape="false" />
-			<a href="/buscador/${categoria.id}" name="${fn:escapeXml(etiqueta_categoria)}" title="${fn:escapeXml(etiqueta_categoria)}" class="categoria"> 
+			<spring:url value="/buscador/${categoria.id}" var="buscaCategoriaUrl" />
+			<a href="${buscaCategoriaUrl}" name="${fn:escapeXml(etiqueta_categoria)}" title="${fn:escapeXml(etiqueta_categoria)}" class="categoria"> 
 				<img src="/resources/images/${categoria.id}_etiqueta.png"/>
 				<img src="/resources/images/${categoria.id}.png"/>
 			</a>
@@ -33,7 +34,8 @@
 	<div id="formulario_login">
 		<c:choose>
 			<c:when test="${empty usuario.id}">
-				<form:form action="/usuarios/login" method="POST" modelAttribute="usuario" enctype="application/x-www-form-urlencoded">
+				<spring:url value="/usuarios/login" var="loginUrl" />
+				<form:form action="${loginUrl}" method="POST" modelAttribute="usuario" enctype="application/x-www-form-urlencoded">
 					<spring:message code="usuario" var="etiqueta_buscador" htmlEscape="false"/>
 					<span>${fn:escapeXml(etiqueta_buscador)} </span>
 					<form:input path="nombre" maxlength="8"/>
@@ -43,7 +45,8 @@
 					<form:password path="contrasenia" maxlength="8"/>
 						
 					<spring:message code="registrate" var="etiqueta_registrate" htmlEscape="false"/>
-					<a href="/usuarios/registro" title="${fn:escapeXml(etiqueta_registrate)}">${fn:escapeXml(etiqueta_registrate)}</a>
+					<spring:url value="/usuarios/registro" var="registroUrl" />
+					<a href="${registroUrl}" title="${fn:escapeXml(etiqueta_registrate)}">${fn:escapeXml(etiqueta_registrate)}</a>
 					<input type="submit" value="${fn:escapeXml(boton_enviar)}" />
 				</form:form>
 			</c:when>
@@ -52,14 +55,17 @@
 					<spring:message code="bienvenido" arguments="${fn:escapeXml(usuario.nombre)}" htmlEscape="false"/><br/>
 					<c:choose>
 						<c:when test="${usuario.permisos == 'A'}">
-							<spring:message code="bienvenido_visita_A" htmlEscape="false"/> <a href="/usuarios/${fn:escapeXml(usuario.id)}"><spring:message code="bienvenido_visita_perfil_A" htmlEscape="false"/></a><br/>
+							<spring:url value="/usuarios/${fn:escapeXml(usuario.id)}" var="usuarioUrl" />
+							<spring:message code="bienvenido_visita_A" htmlEscape="false"/> <a href="${usuarioUrl}"><spring:message code="bienvenido_visita_perfil_A" htmlEscape="false"/></a><br/>
 						</c:when>
 						<c:otherwise>
-							<spring:message code="bienvenido_visita_N" htmlEscape="false"/> <a href="/usuarios/${fn:escapeXml(usuario.id)}"><spring:message code="bienvenido_visita_perfil_N" htmlEscape="false"/></a><br/>
+							<spring:url value="/usuarios/${fn:escapeXml(usuario.id)}" var="usuarioUrl" />
+							<spring:message code="bienvenido_visita_N" htmlEscape="false"/> <a href="${usuarioUrl}"><spring:message code="bienvenido_visita_perfil_N" htmlEscape="false"/></a><br/>
 						</c:otherwise>
 					</c:choose>
 					<spring:message code="etiqueta_desconectar" var="etiqueta_desconectar" htmlEscape="false"/>
-					<a href="/usuarios/desconectar" title="${fn:escapeXml(etiqueta_desconectar)}"><spring:message code="desconectar" htmlEscape="false"/></a>
+					<spring:url value="/usuarios/desconectar" var="desconectarUrl" />
+					<a href="${desconectarUrl}" title="${fn:escapeXml(etiqueta_desconectar)}"><spring:message code="desconectar" htmlEscape="false"/></a>
 				</p>
 			</c:otherwise>
 		</c:choose>

@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import es.pys.model.Fichero;
+import es.pys.dao.IFicheroDao;
 import es.pys.storage.FolderType;
 import es.pys.storage.Storage;
 import es.pys.storage.exceptions.StorageException;
@@ -43,6 +43,9 @@ public abstract class BaseStorage implements Storage {
 	
 	@Value("${api.spring.profiles.openshift}")
 	protected final String springOpenshift = null;
+	
+	@Autowired
+	public IFicheroDao ficheroDao;
 
 	protected static Logger log = LogManager.getRootLogger();
 
@@ -247,7 +250,7 @@ public abstract class BaseStorage implements Storage {
 		}
 
 		// Almacenamos los ficheros insertados localmente
-		Fichero.setFicheros(listado);
+		ficheroDao.setFicheros(listado);
 
 		return listado;
 	}

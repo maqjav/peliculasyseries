@@ -1,44 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC
-	"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
-	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
 
-  <definition name="index" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/listado.jspx" />
-  </definition>
-  
-  <definition name="mensaje" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/mensajes.jspx" />
-  </definition>
-  
-  <definition name="ficha" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/ficha.jspx" />
-  </definition>
-  
-  <definition name="registro" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/registro.jspx" />
-  </definition>
+	<definition name="index" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/listado.jspx" />
+	</definition>
 
-  <definition name="administracion" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/insertar.jspx" />
-  </definition>
-  
-  <definition name="editar" extends="default">
-    <put-attribute name="body" value="/WEB-INF/views/editar.jspx" />
-  </definition>
+	<definition name="mensaje" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/mensajes.jspx" />
+	</definition>
 
-  <definition name="dataAccessFailure" extends="public">
-    <put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jspx" />
-  </definition>
+	<definition name="ficha" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/ficha.jspx" />
+	</definition>
 
-  <definition name="resourceNotFound" extends="public">
-    <put-attribute name="body" value="/WEB-INF/views/resourceNotFound.jspx" />
-  </definition>
+	<definition name="registro" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/registro.jspx" />
+	</definition>
 
-  <definition name="uncaughtException" extends="public">
-    <put-attribute name="body" value="/WEB-INF/views/uncaughtException.jspx" />
-  </definition>
+	<definition name="administracion" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/insertar.jspx" />
+	</definition>
+
+	<definition name="editar" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/editar.jspx" />
+	</definition>
+
+	<definition name="dataAccessFailure" extends="public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/dataAccessFailure.jspx" />
+	</definition>
+
+	<definition name="resourceNotFound" extends="public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/resourceNotFound.jspx" />
+	</definition>
+
+	<definition name="uncaughtException" extends="public">
+		<put-attribute name="body"
+			value="/WEB-INF/views/uncaughtException.jspx" />
+	</definition>
+
+	<definition name="default" template="/WEB-INF/layouts/default.jspx">
+		<put-attribute name="header" value="/WEB-INF/views/header.jspx" />
+		<put-attribute name="menu" value="/WEB-INF/views/menu.jspx" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
+	</definition>
+
+	<definition name="public" template="/WEB-INF/layouts/error.jspx">
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jspx" />
+	</definition>
 
 </tiles-definitions>

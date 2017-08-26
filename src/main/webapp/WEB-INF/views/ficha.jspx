@@ -78,7 +78,8 @@
 			</c:if>
 			<c:if test="${not empty favorito and usuario.permisos == 'N'}">
 			<p>
-				<form:form action="/usuarios/favorito" method="POST" modelAttribute="favorito" enctype="application/x-www-form-urlencoded" id="form_favorito">
+				<spring:url value="/usuarios/favorito" var="favoritoUrl" />
+				<form:form action="${favoritoUrl}" method="POST" modelAttribute="favorito" enctype="application/x-www-form-urlencoded" id="form_favorito">
 					<form:checkbox path="favorito" onchange="document.getElementById('form_favorito').submit(); return false;"/> <span class="etiqueta">${fn:escapeXml(etiqueta_favoritos)} </span>
 					<form:hidden path="id"/>
 				</form:form>

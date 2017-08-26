@@ -5,9 +5,11 @@ import java.util.Map.Entry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import es.pys.dao.IPaisDao;
 import es.pys.decoders.factory.Decoder;
 import es.pys.decoders.factory.DecoderFactory;
 import es.pys.decoders.factory.DecoderType;
@@ -15,10 +17,13 @@ import es.pys.model.Pais;
 import es.pys.model.Pelicula;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:**/META-INF/spring/applicationContext.xml"})
+@ContextConfiguration(locations = { "classpath:**/WEB-INF/spring/applicationContext.xml"})
 public class TestFilmAffinity {
 
 	private final static String url = "https://www.filmaffinity.com/es/film486156.html";
+	
+	@Autowired
+	private IPaisDao paisDao;
 
 	@Test
 	public void extraerContenido() {
@@ -37,7 +42,7 @@ public class TestFilmAffinity {
 		}
 	}
 	
-	protected static Pelicula introducirDatosZinema(Map<String, String> contenido, String fichero, String disco,
+	protected Pelicula introducirDatosZinema(Map<String, String> contenido, String fichero, String disco,
 			String archivador) throws Exception {
 		try {
 			Pelicula pelicula = new Pelicula();
@@ -60,7 +65,7 @@ public class TestFilmAffinity {
 					nacionalidades[0] = "Estados Unidos";
 
 				// Buscamos el pais
-				Pais pais = Pais.findPaisByNombre(nacionalidades[0]);
+				Pais pais = paisDao.findPaisByNombre(nacionalidades[0]);
 				pelicula.setNacionalidad(pais);
 			} else if (contenido.get("pais").contains(",")) {
 				String[] nacionalidades = contenido.get("pais").split(", ");
@@ -69,7 +74,7 @@ public class TestFilmAffinity {
 					nacionalidades[0] = "España";
 
 				// Buscamos el pais
-				Pais pais = Pais.findPaisByNombre(nacionalidades[0]);
+				Pais pais = paisDao.findPaisByNombre(nacionalidades[0]);
 				pelicula.setNacionalidad(pais);
 			} else {
 				if (contenido.get("pais").equals("Español"))

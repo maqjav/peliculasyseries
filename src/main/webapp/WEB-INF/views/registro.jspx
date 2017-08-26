@@ -18,7 +18,8 @@
 			<spring:message code="registro_titulo" var="registro_titulo" htmlEscape="false"/>
 			<span class="titulo">${fn:escapeXml(registro_titulo)}</span>
 			<div id="formulario">
-				<form:form action="/usuarios/registro" method="POST" modelAttribute="registro" enctype="multipart/form-data">
+				<spring:url value="/usuarios/registro" var="registroUrl" />
+				<form:form action="${registroUrl}" method="POST" modelAttribute="registro" enctype="multipart/form-data">
 					<spring:message code="registro_usuario" var="registro_usuario" htmlEscape="false"/>
 					<span>${fn:escapeXml(registro_usuario)} </span>
 					<form:input path="nombre" maxlength="8"/>

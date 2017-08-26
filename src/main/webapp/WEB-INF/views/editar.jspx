@@ -134,9 +134,11 @@
 				<spring:message code="insertar_insertado_enlace" var="insertar_insertado_enlace" htmlEscape="false"/>
 				<span class="etiqueta">${fn:escapeXml(editar_editado)} </span>
 				<spring:message code="etiqueta_insertar" var="etiqueta_insertar" htmlEscape="false"/>
-				<span class="textos">${fn:escapeXml(editar_insertar_enlace)} <a href="/usuarios/${fn:escapeXml(usuario.id)}" title="${fn:escapeXml(etiqueta_insertar)}">${fn:escapeXml(editar_insertar_enlace2)}</a></span>
+				<spring:url value="/usuarios/${fn:escapeXml(usuario.id)}" var="usuariosUrl" />
+				<span class="textos">${fn:escapeXml(editar_insertar_enlace)} <a href="${usuariosUrl}" title="${fn:escapeXml(etiqueta_insertar)}">${fn:escapeXml(editar_insertar_enlace2)}</a></span>
 				<spring:message code="etiqueta_ficha" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_ficha" htmlEscape="false"/>
-				<span class="textos">${fn:escapeXml(insertar_insertado_enlace)} <a href="/ficha/${pelicula.id}" title="${fn:escapeXml(etiqueta_ficha)}" target="_blank">${pelicula.titulo}</a></span>
+				<spring:url value="/ficha/${pelicula.id}" var="fichaUrl" />
+				<span class="textos">${fn:escapeXml(insertar_insertado_enlace)} <a href="${fichaUrl}" title="${fn:escapeXml(etiqueta_ficha)}" target="_blank">${pelicula.titulo}</a></span>
 			</div>
 		</div>
 	</c:if>

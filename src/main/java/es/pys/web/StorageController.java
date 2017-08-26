@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +19,6 @@ import es.pys.storage.factory.StorageFactory;
 
 @RequestMapping("/storage")
 @Controller
-@ComponentScan("es.pys.web")
 public class StorageController {
 
 	private static Logger log = LogManager.getRootLogger();

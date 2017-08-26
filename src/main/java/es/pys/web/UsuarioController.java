@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +30,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import es.pys.dao.IAvatarDao;
+import es.pys.dao.IFicheroDao;
+import es.pys.dao.IPeliculaDao;
+import es.pys.dao.IUsuarioDao;
 import es.pys.model.Avatar;
 import es.pys.model.Buscador;
-import es.pys.model.Categoria;
 import es.pys.model.Favorito;
-import es.pys.model.Fichero;
 import es.pys.model.Inserccion;
 import es.pys.model.Pelicula;
 import es.pys.model.Registro;
@@ -44,14 +45,25 @@ import es.pys.model.Usuario;
 
 @RequestMapping("/usuarios")
 @Controller
-@ComponentScan("es.pys.web")
-public class UsuarioController {
+public class UsuarioController extends BaseController {
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource messageSource;
 
 	@Autowired
 	private Sesion sesion;
+	
+	@Autowired
+	private IUsuarioDao usuarioDao;
+	
+	@Autowired
+	private IFicheroDao ficheroDao;
+	
+	@Autowired
+	private IPeliculaDao peliculaDao;
+	
+	@Autowired
+	private IAvatarDao avatarDao;
 
 	/**
 	 * Función para realizar login
@@ -79,7 +91,7 @@ public class UsuarioController {
 				mensaje = messageSource.getMessage("mensaje_error_contrasenia_vacio", null, new Locale("es_ES"));
 			else {
 				// Obtenemos el usuario de la base de datos
-				List<Usuario> usuarioBd = Usuario.findUsuario(usuario.getNombre());
+				List<Usuario> usuarioBd = usuarioDao.findUsuario(usuario.getNombre());
 
 				// Verificamos que existe
 				if (usuarioBd == null || usuarioBd.isEmpty())
@@ -118,7 +130,7 @@ public class UsuarioController {
 		uiModel.addAttribute("buscador", new Buscador());
 
 		// Insertamos el listado de categorías
-		uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+		uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 		return "registro";
 	}
@@ -140,7 +152,7 @@ public class UsuarioController {
 			if (sesion.getPermisos().equals("A")) {
 				// Insertamos el objeto de inserccion
 				Inserccion inserccion = new Inserccion();
-				inserccion.setFicheros(Fichero.getFicherosDisponibles());
+				inserccion.setFicheros(ficheroDao.getFicherosDisponibles());
 
 				// Cargamos el archivador predeterminado
 				inserccion.setArchivador(messageSource.getMessage("archivador", null, new Locale("es_ES")));
@@ -149,14 +161,14 @@ public class UsuarioController {
 				uiModel.addAttribute("buscador", new Buscador());
 
 				// Insertamos el listado de categorías
-				uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+				uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 				// Insertamos el objeto inserccion
 				uiModel.addAttribute("inserccion", inserccion);
 				return "administracion";
 			} else {
 				// Recuperamos el usuario completo
-				Usuario usuario = Usuario.findUsuario(sesion.getId());
+				Usuario usuario = usuarioDao.findUsuario(sesion.getId());
 
 				// Mostramos el listado de favoritos
 				List<Pelicula> peliculas = new ArrayList<Pelicula>();
@@ -174,7 +186,7 @@ public class UsuarioController {
 					Long total = new Long(peliculas.size());
 
 					// Insertamos los datos necesarios para la portada
-					Comunes.cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
+					cargaDatosListado(uiModel, new Buscador(), peliculas, pagina, total, false);
 
 					// Parámetro para controlar la paginación en función de si
 					// es un listado normal
@@ -211,7 +223,7 @@ public class UsuarioController {
 		else if (registro.getNombre().length() < 6)
 			mensaje = messageSource.getMessage("mensaje_error_registro_nombre_longitud", null, new Locale("es_ES"));
 		// Verificamos que el nombre esta libre
-		else if (!Usuario.findUsuario(registro.getNombre()).isEmpty())
+		else if (!usuarioDao.findUsuario(registro.getNombre()).isEmpty())
 			mensaje = messageSource.getMessage("mensaje_error_registro_nombre_repetido", null, new Locale("es_ES"));
 		// Verificamos que se ha introducido la contraseña
 		else if (registro.getContrasenia() == null || registro.getContrasenia().equals(""))
@@ -233,7 +245,7 @@ public class UsuarioController {
 				// Insertamos el usuario
 				Usuario usuario = rellenarUsuario(registro);
 				uiModel.asMap().remove("registro");
-				usuario.persist();
+				usuarioDao.persist(usuario);
 
 				titulo = messageSource.getMessage("mensaje_registro_correcto_titulo", null, new Locale("es_ES"));
 				mensaje = messageSource.getMessage("mensaje_registro_correcto", null, new Locale("es_ES"));
@@ -255,15 +267,15 @@ public class UsuarioController {
 	@RequestMapping(value = "/favorito", method = RequestMethod.POST)
 	public String favorito(@ModelAttribute("favorito") Favorito favorito, Model uiModel) {
 		// Recuperamos el usuario completo
-		Usuario usuario = Usuario.findUsuario(sesion.getId());
+		Usuario usuario = usuarioDao.findUsuario(sesion.getId());
 
 		// Recuperamos la película
-		Pelicula pelicula = Pelicula.findPelicula(favorito.getId());
+		Pelicula pelicula = peliculaDao.findPelicula(favorito.getId());
 
 		// Creamos un Favorito
 		if (favorito.getFavorito()) {
 			usuario.getPelicula().add(pelicula);
-			usuario.merge();
+			usuarioDao.merge(usuario);
 		}
 		// Eliminamos un favorito
 		else {
@@ -274,7 +286,7 @@ public class UsuarioController {
 				}
 			}
 
-			usuario.merge();
+			usuarioDao.merge(usuario);
 		}
 
 		// Volvemos a mostrar la ficha
@@ -291,7 +303,7 @@ public class UsuarioController {
 	@RequestMapping(value = "/exportar", produces = "text/html")
 	public void generar(Model uiModel, HttpServletResponse response) {
 		// Recuperamos el usuario completo
-		Usuario usuario = Usuario.findUsuario(sesion.getId());
+		Usuario usuario = usuarioDao.findUsuario(sesion.getId());
 
 		String datos = "Fichero generado automáticamente \n\n";
 		for (Pelicula p : usuario.getPelicula()) {
@@ -380,7 +392,7 @@ public class UsuarioController {
 				e.printStackTrace();
 			}
 
-			avatar.persist();
+			avatarDao.persist(avatar);
 			usuarioTmp.setAvatar(avatar);
 		}
 
@@ -420,7 +432,7 @@ public class UsuarioController {
 		uiModel.addAttribute("buscador", new Buscador());
 
 		// Insertamos el listado de categorías
-		uiModel.addAttribute("categorias", Categoria.findAllCategorias());
+		uiModel.addAttribute("categorias", categoriaDao.findAllCategorias());
 
 		// Insertamos los textos del mensaje
 		uiModel.addAttribute("titulo", titulo);

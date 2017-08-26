@@ -17,8 +17,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
@@ -41,8 +40,7 @@ import es.pys.storage.exceptions.StorageException;
 import es.pys.storage.factory.StorageFactory;
 import es.pys.storage.factory.StorageType;
 
-@Configuration
-@ComponentScan("es.pys.storage.services")
+@Service
 public class DriveStorage extends BaseStorage implements Storage {
 
 	private static Logger log = LogManager.getRootLogger();
@@ -82,7 +80,7 @@ public class DriveStorage extends BaseStorage implements Storage {
 			try {
 				if (getDriveService() != null) {
 					// Obtenemos el identificador de la imagen que queremos
-					Fichero fichero = Fichero.findFicheroByNombre(fileName);
+					Fichero fichero = ficheroDao.findFicheroByNombre(fileName);
 					String fileId = null;
 
 					if (getFolderType(folderName).equals(FolderType.FICHA))
@@ -334,15 +332,13 @@ public class DriveStorage extends BaseStorage implements Storage {
 		String cloudId = createNewFile(fileName, MimetypesFileTypeMap.getDefaultFileTypeMap().getContentType(file), folderId, file);
 
 		// Guardamos en la base de datos el identificador
-		Fichero imagen = Fichero.findFicheroByNombre(fileName);
+		Fichero imagen = ficheroDao.findFicheroByNombre(fileName);
 
 		if (folderType.equals(FolderType.FICHA))
 			imagen.setGoogleDriveIdF(cloudId);
 		else
 			imagen.setGoogleDriveIdL(cloudId);
-		imagen.merge();
-
-		return imagen;
+		return ficheroDao.merge(imagen);
 	}
 
 	private Drive getDriveService() throws GeneralSecurityException, IOException, URISyntaxException {

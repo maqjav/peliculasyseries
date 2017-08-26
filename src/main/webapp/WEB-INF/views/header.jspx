@@ -24,7 +24,8 @@
 	
 	<div id="cabecera_menu">
 		<div class="buscador">
-			<form:form action="/buscador" method="POST" modelAttribute="buscador" enctype="application/x-www-form-urlencoded">
+			<spring:url value="/buscador" var="buscadorUrl" />
+			<form:form action="${buscadorUrl}" method="POST" modelAttribute="buscador" enctype="application/x-www-form-urlencoded">
 				<spring:message code="buscador" var="etiqueta_buscador"/>
 				<span>${fn:escapeXml(etiqueta_buscador)}</span>
 				<form:input path="texto"/>

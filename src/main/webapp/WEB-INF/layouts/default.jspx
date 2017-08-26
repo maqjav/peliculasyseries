@@ -9,8 +9,12 @@
 	
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" href="/resources/styles/standard.css" type="text/css"/>
-		<link rel="shortcut icon" href="/resources/images/favicon.ico" type="image/x-icon"/>
+		
+		<spring:url value="/resources/styles/standard.css" var="css" />
+		<link rel="stylesheet" href="${css}" type="text/css"/>
+		
+		<spring:url value="/resources/images/favicon.ico" var="favicon" />
+		<link rel="shortcut icon" href="${favicon}" type="image/x-icon"/>
 		
 		<spring:url value="/resources/js/utils.js" var="utils_js_url" />
 		<script type="text/javascript" src="${utils_js_url}"><!-- Not used --></script>
@@ -18,7 +22,7 @@
 		<title><spring:message code="titulo" /></title>
 	</head>
 	
-	<body>
+	<body>		
 		<div id="wrapper">
 			<tiles:insertAttribute name="header" ignore="true" />
 			<div id="main_ext">

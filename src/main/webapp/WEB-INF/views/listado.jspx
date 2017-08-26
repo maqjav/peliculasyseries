@@ -15,14 +15,15 @@
 	<!-- Listado -->
 	<c:forEach items="${peliculas}" var="pelicula">
 		<div id="fila_lista">
-			<a href="/ficha/${pelicula.id}">
+			<spring:url value="/ficha/${pelicula.id}" var="fichaUrl" />
+			<a href="${fichaUrl}">
 				<div id="img_lista" class="img_cargando">
 					<spring:message code="etiqueta_ficha" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_ficha" htmlEscape="false"/>
 					<img src="/resources/images/listado/${pelicula.img}" title="${fn:escapeXml(etiqueta_ficha)}" width="82" height="116" onerror="seekImg(this, 'listado', '${pelicula.img}')" onload="afterLoad(this)"/>
 				</div>
 			</a>
 			<div id="texto_lista">
-				<a href="/ficha/${pelicula.id}"><span class="titulo">${fn:escapeXml(pelicula.titulo)}</span></a>
+				<a href="${fichaUrl}"><span class="titulo">${fn:escapeXml(pelicula.titulo)}</span></a>
 				<span class="fecha"> (${fn:escapeXml(pelicula.fecha)}) </span>
 				<img src="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
 				<br/>
@@ -69,21 +70,24 @@
 				<c:otherwise>
 					<div class="botones inicio">
 						<c:if test="${pagina != 0}">
-							<a href="?page=0">
+							<spring:url value="/?page=0" var="pagInicial" />
+							<a href="${pagInicial}">
 								<img src="/resources/images/boton_inicio.png" alt="${boton_inicio}" />
 							</a>
 						</c:if>
 					</div>
 					<div class="botones">
 						<c:if test="${pagina != 0}">
-							<a href="?page=${pagina - 1}">
+							<spring:url value="/?page=${pagina - 1}" var="pagAnterior" />
+							<a href="${pagAnterior}">
 								<img src="/resources/images/boton_atras.png" alt="${boton_atras}" />
 							</a>
 						</c:if>
 					</div>
 					<div class="botones">
 						<c:if test="${siguiente}">
-							<a href="?page=${pagina + 1}">
+							<spring:url value="/?page=${pagina + 1}" var="pagSiguiente" />
+							<a href="${pagSiguiente}">
 								<img src="/resources/images/boton_siguiente.png" alt="${boton_siguiente}" />
 							</a>
 						</c:if>
@@ -105,7 +109,8 @@
 				<spring:message code="privado_exportar" var="privado_exportar" htmlEscape="false"/>
 				<spring:message code="privado_exportar_enlace" var="privado_exportar_enlace" htmlEscape="false"/>
 				<spring:message code="privado_exportar_aqui" var="privado_exportar_aqui" htmlEscape="false"/>
-				<span class="textos">${fn:escapeXml(privado_exportar)} <a href="/usuarios/exportar" title="${fn:escapeXml(privado_exportar_enlace)}" target="_blank">${fn:escapeXml(privado_exportar_aqui)}</a></span>
+				<spring:url value="/usuarios/exportar" var="exportarUrl" />
+				<span class="textos">${fn:escapeXml(privado_exportar)} <a href="${exportarUrl}" title="${fn:escapeXml(privado_exportar_enlace)}" target="_blank">${fn:escapeXml(privado_exportar_aqui)}</a></span>
 			</div>
 		</div>
 	</c:if>
