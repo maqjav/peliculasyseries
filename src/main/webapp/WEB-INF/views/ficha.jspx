@@ -39,7 +39,8 @@
 				<span class="etiqueta">${fn:escapeXml(etiqueta_estreno)} </span><span class="textos">${fn:escapeXml(pelicula.fecha)}</span>
 			</p>
 			<p>
-				<span class="etiqueta">${fn:escapeXml(etiqueta_nacionalidad)} </span><img src="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
+				<spring:url var="img_bandera" value="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" />
+				<span class="etiqueta">${fn:escapeXml(etiqueta_nacionalidad)} </span><img src="${img_bandera}" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
 			</p>
 			<p>
 				<span class="etiqueta">${fn:escapeXml(etiqueta_genero)} </span><span class="textos">${fn:escapeXml(pelicula.categoria.nombre)}</span>

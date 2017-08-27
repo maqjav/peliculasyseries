@@ -1,7 +1,7 @@
 /* Funciones carga de imagenes online */
 function seekImg(image, folderName, fileName) {
 	image.onerror = "";
-    image.src = "/storage/"+folderName+"~"+fileName;
+    image.src = "../storage/"+folderName+"~"+fileName;
     image.style.display = "none";
     return true;
 }
@@ -19,9 +19,9 @@ function showImage(idThumb, img) {
 	else {
 		var img1 = new Image();
 		img1.onerror = function() { 
-			document.getElementById(idThumb).style.backgroundImage = "url('/storage/listado"+"~"+value+"')";
+			document.getElementById(idThumb).style.backgroundImage = "url('storage/listado"+"~"+value+"')";
 		};
-		img1.src = "/resources/images/listado/"+value;
-		document.getElementById(idThumb).style.backgroundImage = "url('/resources/images/listado/"+value+"')";
+		img1.src = "resources/images/listado/"+value;
+		document.getElementById(idThumb).style.backgroundImage = "url('resources/images/listado/"+value+"')";
 	}
 }

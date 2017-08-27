@@ -20,8 +20,10 @@
 			<spring:message code="etiqueta_categoria" arguments="${categoria.nombre}" var="etiqueta_categoria" htmlEscape="false" />
 			<spring:url value="/buscador/${categoria.id}" var="buscaCategoriaUrl" />
 			<a href="${buscaCategoriaUrl}" name="${fn:escapeXml(etiqueta_categoria)}" title="${fn:escapeXml(etiqueta_categoria)}" class="categoria"> 
-				<img src="/resources/images/${categoria.id}_etiqueta.png"/>
-				<img src="/resources/images/${categoria.id}.png"/>
+				<spring:url var="categoria_etiqueta" value="/resources/images/${categoria.id}_etiqueta.png" />
+				<img src="${categoria_etiqueta}"/>
+				<spring:url var="categoria" value="/resources/images/${categoria.id}.png" />
+				<img src="${categoria}"/>
 			</a>
 		</c:if>
 	</c:forEach>

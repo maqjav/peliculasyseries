@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,7 +40,7 @@ public class Usuario {
 	@JoinColumn(name = "avatar")
 	private Avatar avatar;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "usuario_pelicula", joinColumns = {
 			@JoinColumn(name = "USUARIO", nullable = false, updatable = false) },
 			inverseJoinColumns = { @JoinColumn(name = "PELICULA", nullable = false, updatable = false) })

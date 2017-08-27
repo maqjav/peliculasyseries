@@ -19,13 +19,15 @@
 			<a href="${fichaUrl}">
 				<div id="img_lista" class="img_cargando">
 					<spring:message code="etiqueta_ficha" arguments="${fn:escapeXml(pelicula.titulo)}" var="etiqueta_ficha" htmlEscape="false"/>
-					<img src="/resources/images/listado/${pelicula.img}" title="${fn:escapeXml(etiqueta_ficha)}" width="82" height="116" onerror="seekImg(this, 'listado', '${pelicula.img}')" onload="afterLoad(this)"/>
+					<spring:url var="img_listado" value="/resources/images/listado/${pelicula.img}" />
+					<img src="${img_listado}" title="${fn:escapeXml(etiqueta_ficha)}" width="82" height="116" onerror="seekImg(this, 'listado', '${pelicula.img}')" onload="afterLoad(this)"/>
 				</div>
 			</a>
 			<div id="texto_lista">
 				<a href="${fichaUrl}"><span class="titulo">${fn:escapeXml(pelicula.titulo)}</span></a>
 				<span class="fecha"> (${fn:escapeXml(pelicula.fecha)}) </span>
-				<img src="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
+				<spring:url var="img_bandera" value="/resources/images/banderas/${fn:toLowerCase(pelicula.nacionalidad.iso)}.png" />
+				<img src="${img_bandera}" title="${fn:escapeXml(pelicula.nacionalidad.nombreImprimible)}"/>
 				<br/>
 				<span class="textos top">${fn:escapeXml(pelicula.categoria.nombre)}</span>
 				<span class="direccion top">${fn:escapeXml(pelicula.direccion)}</span>
@@ -52,17 +54,20 @@
 					</script>
 					<div class="botones inicio">						
 						<c:if test="${pagina != 0}">
-							<img src="/resources/images/boton_inicio.png" alt="${boton_inicio}" class="cursor" onclick="javascript: paginador(0);"/>
+							<spring:url var="boton_inicio_url" value="/resources/images/boton_inicio.png" />
+							<img src="${boton_inicio_url}" alt="${boton_inicio}" class="cursor" onclick="javascript: paginador(0);"/>
 						</c:if>
 					</div>
 					<div class="botones">
 						<c:if test="${pagina != 0}">
-							<img src="/resources/images/boton_atras.png" alt="${boton_atras}" class="cursor" onclick="javascript: paginador(${pagina - 1});"/>
+							<spring:url var="boton_atras_url" value="/resources/images/boton_atras.png" />
+							<img src="${boton_atras_url}" alt="${boton_atras}" class="cursor" onclick="javascript: paginador(${pagina - 1});"/>
 						</c:if>
 					</div>
 					<div class="botones">
 						<c:if test="${siguiente}">
-							<img src="/resources/images/boton_siguiente.png" alt="${boton_siguiente}" class="cursor" onclick="javascript: paginador(${pagina + 1});"/>
+							<spring:url var="boton_siguiente_url" value="/resources/images/boton_siguiente.png" />
+							<img src="${boton_siguiente_url}" alt="${boton_siguiente}" class="cursor" onclick="javascript: paginador(${pagina + 1});"/>
 						</c:if>
 					</div>
 				</c:when>
@@ -72,7 +77,8 @@
 						<c:if test="${pagina != 0}">
 							<spring:url value="/?page=0" var="pagInicial" />
 							<a href="${pagInicial}">
-								<img src="/resources/images/boton_inicio.png" alt="${boton_inicio}" />
+								<spring:url var="boton_inicio_url" value="/resources/images/boton_inicio.png" />
+								<img src="${boton_inicio_url}" alt="${boton_inicio}" />
 							</a>
 						</c:if>
 					</div>
@@ -80,7 +86,8 @@
 						<c:if test="${pagina != 0}">
 							<spring:url value="/?page=${pagina - 1}" var="pagAnterior" />
 							<a href="${pagAnterior}">
-								<img src="/resources/images/boton_atras.png" alt="${boton_atras}" />
+								<spring:url var="boton_atras_url" value="/resources/images/boton_atras.png" />
+								<img src="${boton_atras_url}" alt="${boton_atras}" />
 							</a>
 						</c:if>
 					</div>
@@ -88,7 +95,8 @@
 						<c:if test="${siguiente}">
 							<spring:url value="/?page=${pagina + 1}" var="pagSiguiente" />
 							<a href="${pagSiguiente}">
-								<img src="/resources/images/boton_siguiente.png" alt="${boton_siguiente}" />
+								<spring:url var="boton_siguiente_url" value="/resources/images/boton_siguiente.png" />
+								<img src="${boton_siguiente_url}" alt="${boton_siguiente}" />
 							</a>
 						</c:if>
 					</div>

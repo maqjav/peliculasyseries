@@ -69,7 +69,7 @@ img {
 }
 
 #cabecera_menu {
-	background: url('/resources/images/cabecera_menu.jpg') no-repeat;
+	background: url('../images/cabecera_menu.jpg') no-repeat;
 	background-size: 950px;
 	width: 950px;
 	height: 25px;
@@ -105,13 +105,13 @@ input, select, textarea {
 /* cuerpo */
 #main_ext {
 	float: left;
-	background: url('/resources/images/fondo.jpg') repeat-y;
+	background: url('../images/fondo.jpg') repeat-y;
 	background-size: 950px;
 }
 
 #main {
 	float: left;
-	background: url('/resources/images/fondo_inferior.jpg') no-repeat;
+	background: url('../images/fondo_inferior.jpg') no-repeat;
 	background-size: 950px;
 	background-position: bottom;
 }
@@ -190,13 +190,13 @@ input, select, textarea {
 }
 
 .img_cargando {
-	background: url('/resources/images/cargando_listado.gif') no-repeat;
+	background: url('../images/cargando_listado.gif') no-repeat;
 	background-color: #0F1513;
 	background-position: center center;
 }
 
 .img_cargando_ficha {
-	background: url('/resources/images/cargando_ficha.gif') no-repeat;
+	background: url('../images/cargando_ficha.gif') no-repeat;
 	background-color: #0F1513;
 	background-position: center center;
 }

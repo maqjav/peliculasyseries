@@ -38,12 +38,6 @@ public abstract class BaseStorage implements Storage {
 	@Value("${api.ficha.folder}")
 	protected final String fichaFolder = null;
 	
-	@Value("${api.spring.profiles.variable}")
-	protected final String springProfilesVariable = null;
-	
-	@Value("${api.spring.profiles.openshift}")
-	protected final String springOpenshift = null;
-	
 	@Autowired
 	public IFicheroDao ficheroDao;
 
@@ -55,9 +49,6 @@ public abstract class BaseStorage implements Storage {
 
 	@Value("${api.openshift.data.variable}")
 	protected final String openShiftData = null;
-
-	@Autowired
-	private HttpServletRequest servletRequest;
 
 	@Override
 	public List<String> saveFile(InputStream in) throws StorageException {
@@ -141,12 +132,8 @@ public abstract class BaseStorage implements Storage {
 	 * @return
 	 */
 	protected String getImagesPath() {
-		// En caso de encontrarnos en Openshift, no podemos hacer uso del mismo directorio de despliegue
-		if (System.getenv(springProfilesVariable) != null && System.getenv(springProfilesVariable).equals(springOpenshift))
-			return System.getenv(openShiftData) + IMAGES_FOLDER;
-		// Para cualquier otro caso obtenemos la ruta de despliegue
-		else
-			return servletRequest.getSession().getServletContext().getRealPath("/") + IMAGES_FOLDER;
+		log.info("Variable del sistema OPENSHIFT_DATA_DIR " + System.getenv(openShiftData) + IMAGES_FOLDER);
+		return System.getenv(openShiftData) + IMAGES_FOLDER;
 	}
 
 	/**
