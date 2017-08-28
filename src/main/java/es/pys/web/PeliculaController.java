@@ -43,7 +43,7 @@ import es.pys.model.Pais;
 import es.pys.model.Pelicula;
 import es.pys.model.Sesion;
 import es.pys.model.Usuario;
-import es.pys.storage.Storage;
+import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 import es.pys.storage.factory.StorageFactory;
 
@@ -209,7 +209,7 @@ public class PeliculaController extends BaseController {
 		log.debug("Subiendo imagenes. El tamaño del fichero adjunto es: " + inserccion.getPaquete().getSize());
 
 		try { // Extraemos los ficheros y los almacenamos
-			Storage storageService = storageFactory.getStorage();
+			IStorage storageService = storageFactory.getStorage();
 			List<String> listado = storageService.saveFile(inserccion.getPaquete().getInputStream());
 			inserccion.setFicheros(listado);
 			// Mensaje de confirmacion

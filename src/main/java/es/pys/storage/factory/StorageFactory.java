@@ -2,22 +2,18 @@ package es.pys.storage.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
-import es.pys.storage.Storage;
-import es.pys.storage.services.DriveStorage;
-import es.pys.storage.services.LocalStorage;
+import es.pys.storage.IStorage;
 
-@Configuration
-@ComponentScan("es.pys.storage.factory")
+@Service
 public class StorageFactory {
 
 	@Autowired
-	private DriveStorage driveStorage;
+	private IStorage driveStorage;
 
 	@Autowired
-	private LocalStorage localStorage;
+	private IStorage localStorage;
 
 	@Value("${api.system.storage.variable}")
 	private String SYSTEM_STORAGE_VARIABLE;
@@ -28,7 +24,7 @@ public class StorageFactory {
 	 * @param storageType
 	 * @return
 	 */
-	public Storage getStorage(StorageType storageType) {
+	public IStorage getStorage(StorageType storageType) {
 		if (storageType.equals(StorageType.DRIVE))
 			return driveStorage;
 		else
@@ -48,7 +44,7 @@ public class StorageFactory {
 	 *            </ul>
 	 * @return
 	 */
-	public Storage getStorage(String systemStoragePreference) {
+	public IStorage getStorage(String systemStoragePreference) {
 		if (systemStoragePreference == null || systemStoragePreference.equals("local"))
 			return getStorage(StorageType.LOCAL);
 		else if (systemStoragePreference.equals("drive"))
@@ -64,7 +60,7 @@ public class StorageFactory {
 	 * 
 	 * @return
 	 */
-	public Storage getStorage() {
+	public IStorage getStorage() {
 		String systemVar = System.getenv(SYSTEM_STORAGE_VARIABLE);
 		return getStorage(systemVar);
 	}

@@ -13,7 +13,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -27,10 +27,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 import es.pys.dao.IFicheroDao;
 import es.pys.storage.FolderType;
-import es.pys.storage.Storage;
+import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 
-public abstract class BaseStorage implements Storage {
+public abstract class BaseStorage implements IStorage {
 
 	@Value("${api.listado.folder}")
 	protected final String listadoFolder = null;
@@ -51,6 +51,7 @@ public abstract class BaseStorage implements Storage {
 	protected final String openShiftData = null;
 
 	@Override
+	@Transactional
 	public List<String> saveFile(InputStream in) throws StorageException {
 		if (in != null) {
 			File tmp = inputStreamToFile(in);
@@ -62,6 +63,7 @@ public abstract class BaseStorage implements Storage {
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(File file) throws StorageException {
 		if (file != null) {
 			try {
@@ -77,6 +79,7 @@ public abstract class BaseStorage implements Storage {
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(String path) throws StorageException {
 		if (path != null) {
 			File file = new File(path);
@@ -204,6 +207,7 @@ public abstract class BaseStorage implements Storage {
 		}
 	}
 
+	@Transactional
 	private List<String> extractFiles(File file) throws ZipException {
 		ZipFile zipFile = new ZipFile(file);
 		if (zipFile.isEncrypted()) {

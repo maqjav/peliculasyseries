@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.transaction.Transactional;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -35,13 +36,13 @@ import com.google.api.services.drive.model.ParentReference;
 
 import es.pys.model.Fichero;
 import es.pys.storage.FolderType;
-import es.pys.storage.Storage;
+import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 import es.pys.storage.factory.StorageFactory;
 import es.pys.storage.factory.StorageType;
 
 @Service
-public class DriveStorage extends BaseStorage implements Storage {
+public class DriveStorage extends BaseStorage implements IStorage {
 
 	private static Logger log = LogManager.getRootLogger();
 
@@ -65,6 +66,7 @@ public class DriveStorage extends BaseStorage implements Storage {
 	private StorageFactory storageFactory;
 
 	@Override
+	@Transactional
 	public boolean deleteFile(String fileName, String folderName) {
 		return super.deleteFile(fileName, folderName);
 	}
@@ -180,6 +182,7 @@ public class DriveStorage extends BaseStorage implements Storage {
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(File file) throws StorageException {
 		try {
 			if (getDriveService() != null) {
@@ -217,11 +220,13 @@ public class DriveStorage extends BaseStorage implements Storage {
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(InputStream in) throws StorageException {
 		return super.saveFile(in);
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(String path) throws StorageException {
 		try {
 			if (getDriveService() != null) {

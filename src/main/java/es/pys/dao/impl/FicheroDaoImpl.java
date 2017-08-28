@@ -3,6 +3,8 @@ package es.pys.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Repository;
 
 import es.pys.dao.IFicheroDao;
@@ -61,6 +63,7 @@ public class FicheroDaoImpl extends BaseDao<Fichero> implements IFicheroDao {
 	 * @see es.pys.dao.impl.IFicheroDao#setFicheros(java.util.List)
 	 */
 	@Override
+	@Transactional
 	public void setFicheros(List<String> nombresFicheros) {
 		// Obtenemos el listado de ficheros nuevos
 		for (String nombreFichero : nombresFicheros) {

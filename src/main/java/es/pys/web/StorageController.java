@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.pys.model.Sesion;
-import es.pys.storage.Storage;
+import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 import es.pys.storage.factory.StorageFactory;
 
@@ -36,7 +36,7 @@ public class StorageController {
 
 		String folder = StringUtils.substringBefore(img, "~");
 		String file = StringUtils.substringAfter(img, "~");
-		Storage storageService = storageFactory.getStorage();
+		IStorage storageService = storageFactory.getStorage();
 		try {
 			if (sesion != null && sesion.getId() != null)
 				log.info("Se ha detectado que el identificador dentro del Storage vale: " + sesion.getId());
@@ -57,7 +57,7 @@ public class StorageController {
 
 		String folder = StringUtils.substringBefore(img, "~");
 		String file = StringUtils.substringAfter(img, "~");
-		Storage storageService = storageFactory.getStorage();
+		IStorage storageService = storageFactory.getStorage();
 		storageService.deleteFile(file, folder);
 	}
 }

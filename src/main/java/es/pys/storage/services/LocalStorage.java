@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import javax.transaction.Transactional;
 
-import es.pys.storage.Storage;
+import org.springframework.stereotype.Service;
+
+import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 
 /**
@@ -16,16 +17,17 @@ import es.pys.storage.exceptions.StorageException;
  * @author javimarcos
  * 
  */
-@Configuration
-@ComponentScan("es.pys.storage.services")
-public class LocalStorage extends BaseStorage implements Storage {
+@Service
+public class LocalStorage extends BaseStorage implements IStorage {
 
 	@Override
+	@Transactional
 	public List<String> saveFile(File file) throws StorageException {
 		return super.saveFile(file);
 	}
 
 	@Override
+	@Transactional
 	public List<String> saveFile(InputStream in) throws StorageException {
 		return super.saveFile(in);
 	}

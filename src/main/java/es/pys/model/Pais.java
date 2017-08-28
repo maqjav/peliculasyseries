@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
-@Configurable
 @Entity
 @Table(name = "pais")
 public class Pais {
