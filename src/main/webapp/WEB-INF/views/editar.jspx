@@ -17,7 +17,8 @@
 			<spring:message code="editar_titulo" var="editar_titulo" htmlEscape="false"/>
 			<span class="titulo">${fn:escapeXml(editar_titulo)}</span>
 			<div id="formulario" class="formulario_editar">
-				<form:form action="/editar/${pelicula.id}" method="POST" modelAttribute="pelicula" enctype="application/x-www-form-urlencoded">
+				<spring:url var="editarUrl" value="/editar/${pelicula.id}" />
+				<form:form action="${editarUrl}" method="POST" modelAttribute="pelicula">
 					<!-- Titulo -->
 					<spring:message code="etiqueta_titulo" var="etiqueta_titulo" htmlEscape="false"/>
 					<span>${fn:escapeXml(etiqueta_titulo)} </span>

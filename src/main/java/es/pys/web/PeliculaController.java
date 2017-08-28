@@ -21,12 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.pys.dao.ICategoriaDao;
 import es.pys.dao.IFicheroDao;
 import es.pys.dao.IPaisDao;
 import es.pys.dao.IPeliculaDao;
@@ -46,6 +49,8 @@ import es.pys.model.Usuario;
 import es.pys.storage.IStorage;
 import es.pys.storage.exceptions.StorageException;
 import es.pys.storage.factory.StorageFactory;
+import es.pys.web.propertyEditors.CategoriaEditor;
+import es.pys.web.propertyEditors.PaisEditor;
 
 @RequestMapping("/")
 @Controller
@@ -74,7 +79,16 @@ public class PeliculaController extends BaseController {
 	@Autowired
 	private IPaisDao paisDao;
 
+	@Autowired
+	private ICategoriaDao categoriaDao;
+	
 	private final Integer PAG_SIZE = 20;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder){
+	    binder.registerCustomEditor(Pais.class, new PaisEditor(paisDao));
+	    binder.registerCustomEditor(Categoria.class, new CategoriaEditor(categoriaDao));
+	}
 
 	/**
 	 * Función de entrada de la aplicación. Obtiene el listado de peliculas
@@ -474,6 +488,7 @@ public class PeliculaController extends BaseController {
 		// Recargamos el listado de ficheros disponibles para el combo
 		// No se guardan entre vistas
 		inserccion.setFicheros(ficheroDao.getFicherosDisponibles());
+		inserccion.setUrl("");
 
 		return respuesta;
 	}
